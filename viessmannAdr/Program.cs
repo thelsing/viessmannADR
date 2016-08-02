@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,126 @@ namespace viessmannAdr
 {
     class Program
     {
+        static Dictionary<string, string> textValues = new Dictionary<string, string>();
+
         static void Main(string[] args)
+        {
+            initTextValues();
+
+            var dc = new DataClasses1DataContext();
+
+            var query = from g in dc.ecnEventTypeGroup
+                        where g.DataPointTypeId == 350
+                        && g.ParentId == -1 
+                        && (g.ecnEventTypeGroup2.Any() || g.ecnEventTypeEventTypeGroupLink.Any())
+                        select g;
+
+            foreach (var g in query)
+            {
+                printEventGroup(0, g);
+                Console.WriteLine();
+                Console.ReadKey();
+            }
+            Console.ReadKey();
+        }
+
+        private static void initTextValues()
+        {
+            XmlSerializer trSerializer = new XmlSerializer(typeof(TextResources));
+
+            TextResources tr = (TextResources)trSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\Web\XmlDocuments\Textresource_de_tk.xml"));
+            foreach (var item in tr.Items)
+                textValues[item.Label] = item.Value;
+        }
+
+        static string trans(string para)
+        {
+            var ret = para.Trim('@');
+            ret = ret.Replace("viessmann.eventvaluetype.name.", "viessmann.eventvaluetype.");
+            if (textValues.ContainsKey(ret))
+                ret = textValues[ret];
+
+            return ret.Trim();
+        }
+
+        static void printEventGroup(int indent, ecnEventTypeGroup g)
+        {
+            var name = trans(g.Name);
+            bool showResult = true;
+
+            g.ecnDisplayConditionGroup.Load();
+            var hideGroup = EvalConditions(indent, g.ecnDisplayConditionGroup, false);
+            if (hideGroup && showResult)
+                return;
+
+            Console.WriteLine(new string(' ', indent) + "G " + name + (hideGroup? " (Hidden) ":" ") + g.OrderIndex);
+            EvalConditions(indent + 8, g.ecnDisplayConditionGroup, !showResult);
+
+            g.ecnEventTypeEventTypeGroupLink.Load();
+            foreach (var evl in g.ecnEventTypeEventTypeGroupLink.OrderBy(o => o.EventTypeOrder))
+            {
+                var evName = evl.ecnEventType.Name.Trim('@');
+                if (textValues.ContainsKey(evName))
+                    evName = textValues[evName];
+
+                evl.ecnEventType.ecnDisplayConditionGroup.Load();
+                var hide = EvalConditions(indent + 16, evl.ecnEventType.ecnDisplayConditionGroup, false);
+                if (!hide || !showResult)
+                {
+                    Console.WriteLine(new string(' ', indent + 8) + "E " + evName + (hide ? " (Hidden)" : ""));
+                    EvalConditions(indent + 16, evl.ecnEventType.ecnDisplayConditionGroup, !showResult);
+                }
+            }
+
+            g.ecnEventTypeGroup2.Load();
+            foreach (var sg in g.ecnEventTypeGroup2.OrderBy(o => o.OrderIndex))
+                printEventGroup(indent + 8, sg);
+        }
+
+        private static bool EvalConditions(int indent, EntitySet<ecnDisplayConditionGroup> g, bool debug)
+        {
+            bool ret = false;
+            foreach(var c in g)
+            {
+                c.ecnDisplayCondition.Load();
+                bool cond = false;
+                foreach (var co in c.ecnDisplayCondition)
+                {
+                    cond = co.ecnEventGroupValueCache.Any() && co.EqualCondition;
+                    if (!co.EqualCondition)
+                        cond = !cond;
+
+                    if (cond)
+                        break;
+                }
+
+                ret = cond;
+                if (!debug)
+                {
+                    if (cond)
+                        break;
+                    else
+                        continue;
+                }
+
+                var name = trans(c.Name);
+                Console.WriteLine(new string(' ', indent) + "C " + name + " (" + cond + ")");
+                foreach (var co in c.ecnDisplayCondition)
+                {
+                    var value = co.ecnEventGroupValueCache.Any();
+
+                    if (!co.EqualCondition)
+                        value = !value;
+
+                    Console.WriteLine(new string(' ', indent + 8) + trans(co.ecnEventType.Name) + " " +
+                        (co.EqualCondition ? "==" : "!=") + " " + trans(co.ecnEventValueType.Name) + 
+                        " (" + value + ")");
+                }
+            }
+            return ret;
+        }
+
+        static void generateVitoXML()
         {
             HashSet<string> set = new HashSet<string>();
             var reader = new StreamReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\log\statistic.log");

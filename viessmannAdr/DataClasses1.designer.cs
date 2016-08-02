@@ -36,6 +36,27 @@ namespace viessmannAdr
     partial void InsertecnEventType(ecnEventType instance);
     partial void UpdateecnEventType(ecnEventType instance);
     partial void DeleteecnEventType(ecnEventType instance);
+    partial void InsertecnDatapointType(ecnDatapointType instance);
+    partial void UpdateecnDatapointType(ecnDatapointType instance);
+    partial void DeleteecnDatapointType(ecnDatapointType instance);
+    partial void InsertecnDisplayCondition(ecnDisplayCondition instance);
+    partial void UpdateecnDisplayCondition(ecnDisplayCondition instance);
+    partial void DeleteecnDisplayCondition(ecnDisplayCondition instance);
+    partial void InsertecnDisplayConditionGroup(ecnDisplayConditionGroup instance);
+    partial void UpdateecnDisplayConditionGroup(ecnDisplayConditionGroup instance);
+    partial void DeleteecnDisplayConditionGroup(ecnDisplayConditionGroup instance);
+    partial void InsertecnEventTypeGroup(ecnEventTypeGroup instance);
+    partial void UpdateecnEventTypeGroup(ecnEventTypeGroup instance);
+    partial void DeleteecnEventTypeGroup(ecnEventTypeGroup instance);
+    partial void InsertecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink instance);
+    partial void UpdateecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink instance);
+    partial void DeleteecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink instance);
+    partial void InsertecnEventValueType(ecnEventValueType instance);
+    partial void UpdateecnEventValueType(ecnEventValueType instance);
+    partial void DeleteecnEventValueType(ecnEventValueType instance);
+    partial void InsertecnEventGroupValueCache(ecnEventGroupValueCache instance);
+    partial void UpdateecnEventGroupValueCache(ecnEventGroupValueCache instance);
+    partial void DeleteecnEventGroupValueCache(ecnEventGroupValueCache instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -83,6 +104,62 @@ namespace viessmannAdr
 				return this.GetTable<ecnEventType>();
 			}
 		}
+		
+		public System.Data.Linq.Table<ecnDatapointType> ecnDatapointType
+		{
+			get
+			{
+				return this.GetTable<ecnDatapointType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnDisplayCondition> ecnDisplayCondition
+		{
+			get
+			{
+				return this.GetTable<ecnDisplayCondition>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnDisplayConditionGroup> ecnDisplayConditionGroup
+		{
+			get
+			{
+				return this.GetTable<ecnDisplayConditionGroup>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnEventTypeGroup> ecnEventTypeGroup
+		{
+			get
+			{
+				return this.GetTable<ecnEventTypeGroup>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
+		{
+			get
+			{
+				return this.GetTable<ecnEventTypeEventTypeGroupLink>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnEventValueType> ecnEventValueType
+		{
+			get
+			{
+				return this.GetTable<ecnEventValueType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnEventGroupValueCache> ecnEventGroupValueCache
+		{
+			get
+			{
+				return this.GetTable<ecnEventGroupValueCache>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnDataPointTypeEventTypeLink")]
@@ -99,6 +176,8 @@ namespace viessmannAdr
 		
 		private EntityRef<ecnEventType> _ecnEventType;
 		
+		private EntityRef<ecnDatapointType> _ecnDatapointType;
+		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -114,6 +193,7 @@ namespace viessmannAdr
 		public ecnDataPointTypeEventTypeLink()
 		{
 			this._ecnEventType = default(EntityRef<ecnEventType>);
+			this._ecnDatapointType = default(EntityRef<ecnDatapointType>);
 			OnCreated();
 		}
 		
@@ -148,6 +228,10 @@ namespace viessmannAdr
 			{
 				if ((this._DataPointTypeId != value))
 				{
+					if (this._ecnDatapointType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnDataPointTypeIdChanging(value);
 					this.SendPropertyChanging();
 					this._DataPointTypeId = value;
@@ -215,6 +299,40 @@ namespace viessmannAdr
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDatapointType_ecnDataPointTypeEventTypeLink", Storage="_ecnDatapointType", ThisKey="DataPointTypeId", OtherKey="Id", IsForeignKey=true)]
+		public ecnDatapointType ecnDatapointType
+		{
+			get
+			{
+				return this._ecnDatapointType.Entity;
+			}
+			set
+			{
+				ecnDatapointType previousValue = this._ecnDatapointType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnDatapointType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnDatapointType.Entity = null;
+						previousValue.ecnDataPointTypeEventTypeLink.Remove(this);
+					}
+					this._ecnDatapointType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDataPointTypeEventTypeLink.Add(this);
+						this._DataPointTypeId = value.Id;
+					}
+					else
+					{
+						this._DataPointTypeId = default(int);
+					}
+					this.SendPropertyChanged("ecnDatapointType");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -272,6 +390,14 @@ namespace viessmannAdr
 		
 		private EntitySet<ecnDataPointTypeEventTypeLink> _ecnDataPointTypeEventTypeLink;
 		
+		private EntitySet<ecnEventTypeEventTypeGroupLink> _ecnEventTypeEventTypeGroupLink;
+		
+		private EntitySet<ecnDisplayConditionGroup> _ecnDisplayConditionGroup;
+		
+		private EntitySet<ecnDisplayCondition> _ecnDisplayCondition;
+		
+		private EntitySet<ecnEventGroupValueCache> _ecnEventGroupValueCache;
+		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -309,6 +435,10 @@ namespace viessmannAdr
 		public ecnEventType()
 		{
 			this._ecnDataPointTypeEventTypeLink = new EntitySet<ecnDataPointTypeEventTypeLink>(new Action<ecnDataPointTypeEventTypeLink>(this.attach_ecnDataPointTypeEventTypeLink), new Action<ecnDataPointTypeEventTypeLink>(this.detach_ecnDataPointTypeEventTypeLink));
+			this._ecnEventTypeEventTypeGroupLink = new EntitySet<ecnEventTypeEventTypeGroupLink>(new Action<ecnEventTypeEventTypeGroupLink>(this.attach_ecnEventTypeEventTypeGroupLink), new Action<ecnEventTypeEventTypeGroupLink>(this.detach_ecnEventTypeEventTypeGroupLink));
+			this._ecnDisplayConditionGroup = new EntitySet<ecnDisplayConditionGroup>(new Action<ecnDisplayConditionGroup>(this.attach_ecnDisplayConditionGroup), new Action<ecnDisplayConditionGroup>(this.detach_ecnDisplayConditionGroup));
+			this._ecnDisplayCondition = new EntitySet<ecnDisplayCondition>(new Action<ecnDisplayCondition>(this.attach_ecnDisplayCondition), new Action<ecnDisplayCondition>(this.detach_ecnDisplayCondition));
+			this._ecnEventGroupValueCache = new EntitySet<ecnEventGroupValueCache>(new Action<ecnEventGroupValueCache>(this.attach_ecnEventGroupValueCache), new Action<ecnEventGroupValueCache>(this.detach_ecnEventGroupValueCache));
 			OnCreated();
 		}
 		
@@ -605,6 +735,58 @@ namespace viessmannAdr
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeEventTypeGroupLink", ThisKey="Id", OtherKey="EventTypeId")]
+		public EntitySet<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
+		{
+			get
+			{
+				return this._ecnEventTypeEventTypeGroupLink;
+			}
+			set
+			{
+				this._ecnEventTypeEventTypeGroupLink.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnDisplayConditionGroup", Storage="_ecnDisplayConditionGroup", ThisKey="Id", OtherKey="EventTypeIdDest")]
+		public EntitySet<ecnDisplayConditionGroup> ecnDisplayConditionGroup
+		{
+			get
+			{
+				return this._ecnDisplayConditionGroup;
+			}
+			set
+			{
+				this._ecnDisplayConditionGroup.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnDisplayCondition", Storage="_ecnDisplayCondition", ThisKey="Id", OtherKey="EventTypeIdCondition")]
+		public EntitySet<ecnDisplayCondition> ecnDisplayCondition
+		{
+			get
+			{
+				return this._ecnDisplayCondition;
+			}
+			set
+			{
+				this._ecnDisplayCondition.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnEventGroupValueCache", Storage="_ecnEventGroupValueCache", ThisKey="Id", OtherKey="EventTypeId")]
+		public EntitySet<ecnEventGroupValueCache> ecnEventGroupValueCache
+		{
+			get
+			{
+				return this._ecnEventGroupValueCache;
+			}
+			set
+			{
+				this._ecnEventGroupValueCache.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -635,6 +817,2700 @@ namespace viessmannAdr
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventType = null;
+		}
+		
+		private void attach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = this;
+		}
+		
+		private void detach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = null;
+		}
+		
+		private void attach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = this;
+		}
+		
+		private void detach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = null;
+		}
+		
+		private void attach_ecnDisplayCondition(ecnDisplayCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = this;
+		}
+		
+		private void detach_ecnDisplayCondition(ecnDisplayCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = null;
+		}
+		
+		private void attach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = this;
+		}
+		
+		private void detach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnDatapointType")]
+	public partial class ecnDatapointType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private byte _CompanyId;
+		
+		private string _Name;
+		
+		private string _Description;
+		
+		private int _StatusEventTypeId;
+		
+		private string _Address;
+		
+		private EntitySet<ecnDataPointTypeEventTypeLink> _ecnDataPointTypeEventTypeLink;
+		
+		private EntitySet<ecnEventTypeGroup> _ecnEventTypeGroup;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnStatusEventTypeIdChanging(int value);
+    partial void OnStatusEventTypeIdChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    #endregion
+		
+		public ecnDatapointType()
+		{
+			this._ecnDataPointTypeEventTypeLink = new EntitySet<ecnDataPointTypeEventTypeLink>(new Action<ecnDataPointTypeEventTypeLink>(this.attach_ecnDataPointTypeEventTypeLink), new Action<ecnDataPointTypeEventTypeLink>(this.detach_ecnDataPointTypeEventTypeLink));
+			this._ecnEventTypeGroup = new EntitySet<ecnEventTypeGroup>(new Action<ecnEventTypeGroup>(this.attach_ecnEventTypeGroup), new Action<ecnEventTypeGroup>(this.detach_ecnEventTypeGroup));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusEventTypeId", DbType="Int NOT NULL")]
+		public int StatusEventTypeId
+		{
+			get
+			{
+				return this._StatusEventTypeId;
+			}
+			set
+			{
+				if ((this._StatusEventTypeId != value))
+				{
+					this.OnStatusEventTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._StatusEventTypeId = value;
+					this.SendPropertyChanged("StatusEventTypeId");
+					this.OnStatusEventTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(255)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDatapointType_ecnDataPointTypeEventTypeLink", Storage="_ecnDataPointTypeEventTypeLink", ThisKey="Id", OtherKey="DataPointTypeId")]
+		public EntitySet<ecnDataPointTypeEventTypeLink> ecnDataPointTypeEventTypeLink
+		{
+			get
+			{
+				return this._ecnDataPointTypeEventTypeLink;
+			}
+			set
+			{
+				this._ecnDataPointTypeEventTypeLink.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDatapointType_ecnEventTypeGroup", Storage="_ecnEventTypeGroup", ThisKey="Id", OtherKey="DataPointTypeId")]
+		public EntitySet<ecnEventTypeGroup> ecnEventTypeGroup
+		{
+			get
+			{
+				return this._ecnEventTypeGroup;
+			}
+			set
+			{
+				this._ecnEventTypeGroup.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ecnDataPointTypeEventTypeLink(ecnDataPointTypeEventTypeLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDatapointType = this;
+		}
+		
+		private void detach_ecnDataPointTypeEventTypeLink(ecnDataPointTypeEventTypeLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDatapointType = null;
+		}
+		
+		private void attach_ecnEventTypeGroup(ecnEventTypeGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDatapointType = this;
+		}
+		
+		private void detach_ecnEventTypeGroup(ecnEventTypeGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDatapointType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnDisplayCondition")]
+	public partial class ecnDisplayCondition : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private byte _CompanyId;
+		
+		private string _Name;
+		
+		private int _ConditionGroupId;
+		
+		private int _EventTypeIdCondition;
+		
+		private int _EventTypeValueCondition;
+		
+		private bool _EqualCondition;
+		
+		private string _Description;
+		
+		private EntitySet<ecnEventGroupValueCache> _ecnEventGroupValueCache;
+		
+		private EntityRef<ecnDisplayConditionGroup> _ecnDisplayConditionGroup;
+		
+		private EntityRef<ecnEventType> _ecnEventType;
+		
+		private EntityRef<ecnEventValueType> _ecnEventValueType;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnConditionGroupIdChanging(int value);
+    partial void OnConditionGroupIdChanged();
+    partial void OnEventTypeIdConditionChanging(int value);
+    partial void OnEventTypeIdConditionChanged();
+    partial void OnEventTypeValueConditionChanging(int value);
+    partial void OnEventTypeValueConditionChanged();
+    partial void OnEqualConditionChanging(bool value);
+    partial void OnEqualConditionChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public ecnDisplayCondition()
+		{
+			this._ecnEventGroupValueCache = new EntitySet<ecnEventGroupValueCache>(new Action<ecnEventGroupValueCache>(this.attach_ecnEventGroupValueCache), new Action<ecnEventGroupValueCache>(this.detach_ecnEventGroupValueCache));
+			this._ecnDisplayConditionGroup = default(EntityRef<ecnDisplayConditionGroup>);
+			this._ecnEventType = default(EntityRef<ecnEventType>);
+			this._ecnEventValueType = default(EntityRef<ecnEventValueType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConditionGroupId", DbType="Int NOT NULL")]
+		public int ConditionGroupId
+		{
+			get
+			{
+				return this._ConditionGroupId;
+			}
+			set
+			{
+				if ((this._ConditionGroupId != value))
+				{
+					if (this._ecnDisplayConditionGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnConditionGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._ConditionGroupId = value;
+					this.SendPropertyChanged("ConditionGroupId");
+					this.OnConditionGroupIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeIdCondition", DbType="Int NOT NULL")]
+		public int EventTypeIdCondition
+		{
+			get
+			{
+				return this._EventTypeIdCondition;
+			}
+			set
+			{
+				if ((this._EventTypeIdCondition != value))
+				{
+					if (this._ecnEventType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeIdConditionChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeIdCondition = value;
+					this.SendPropertyChanged("EventTypeIdCondition");
+					this.OnEventTypeIdConditionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeValueCondition", DbType="Int NOT NULL")]
+		public int EventTypeValueCondition
+		{
+			get
+			{
+				return this._EventTypeValueCondition;
+			}
+			set
+			{
+				if ((this._EventTypeValueCondition != value))
+				{
+					if (this._ecnEventValueType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeValueConditionChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeValueCondition = value;
+					this.SendPropertyChanged("EventTypeValueCondition");
+					this.OnEventTypeValueConditionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EqualCondition", DbType="Bit NOT NULL")]
+		public bool EqualCondition
+		{
+			get
+			{
+				return this._EqualCondition;
+			}
+			set
+			{
+				if ((this._EqualCondition != value))
+				{
+					this.OnEqualConditionChanging(value);
+					this.SendPropertyChanging();
+					this._EqualCondition = value;
+					this.SendPropertyChanged("EqualCondition");
+					this.OnEqualConditionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDisplayCondition_ecnEventGroupValueCache", Storage="_ecnEventGroupValueCache", ThisKey="EventTypeIdCondition,EventTypeValueCondition", OtherKey="EventTypeId,EventValueTypeId")]
+		public EntitySet<ecnEventGroupValueCache> ecnEventGroupValueCache
+		{
+			get
+			{
+				return this._ecnEventGroupValueCache;
+			}
+			set
+			{
+				this._ecnEventGroupValueCache.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDisplayConditionGroup_ecnDisplayCondition", Storage="_ecnDisplayConditionGroup", ThisKey="ConditionGroupId", OtherKey="Id", IsForeignKey=true)]
+		public ecnDisplayConditionGroup ecnDisplayConditionGroup
+		{
+			get
+			{
+				return this._ecnDisplayConditionGroup.Entity;
+			}
+			set
+			{
+				ecnDisplayConditionGroup previousValue = this._ecnDisplayConditionGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnDisplayConditionGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnDisplayConditionGroup.Entity = null;
+						previousValue.ecnDisplayCondition.Remove(this);
+					}
+					this._ecnDisplayConditionGroup.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDisplayCondition.Add(this);
+						this._ConditionGroupId = value.Id;
+					}
+					else
+					{
+						this._ConditionGroupId = default(int);
+					}
+					this.SendPropertyChanged("ecnDisplayConditionGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnDisplayCondition", Storage="_ecnEventType", ThisKey="EventTypeIdCondition", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventType ecnEventType
+		{
+			get
+			{
+				return this._ecnEventType.Entity;
+			}
+			set
+			{
+				ecnEventType previousValue = this._ecnEventType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventType.Entity = null;
+						previousValue.ecnDisplayCondition.Remove(this);
+					}
+					this._ecnEventType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDisplayCondition.Add(this);
+						this._EventTypeIdCondition = value.Id;
+					}
+					else
+					{
+						this._EventTypeIdCondition = default(int);
+					}
+					this.SendPropertyChanged("ecnEventType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventValueType_ecnDisplayCondition", Storage="_ecnEventValueType", ThisKey="EventTypeValueCondition", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventValueType ecnEventValueType
+		{
+			get
+			{
+				return this._ecnEventValueType.Entity;
+			}
+			set
+			{
+				ecnEventValueType previousValue = this._ecnEventValueType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventValueType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventValueType.Entity = null;
+						previousValue.ecnDisplayCondition.Remove(this);
+					}
+					this._ecnEventValueType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDisplayCondition.Add(this);
+						this._EventTypeValueCondition = value.Id;
+					}
+					else
+					{
+						this._EventTypeValueCondition = default(int);
+					}
+					this.SendPropertyChanged("ecnEventValueType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDisplayCondition = this;
+		}
+		
+		private void detach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDisplayCondition = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnDisplayConditionGroup")]
+	public partial class ecnDisplayConditionGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private byte _CompanyId;
+		
+		private string _Name;
+		
+		private byte _Type;
+		
+		private int _ParentId;
+		
+		private string _Description;
+		
+		private int _EventTypeIdDest;
+		
+		private int _EventTypeGroupIdDest;
+		
+		private EntitySet<ecnDisplayCondition> _ecnDisplayCondition;
+		
+		private EntityRef<ecnEventTypeGroup> _ecnEventTypeGroup;
+		
+		private EntityRef<ecnEventType> _ecnEventType;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnTypeChanging(byte value);
+    partial void OnTypeChanged();
+    partial void OnParentIdChanging(int value);
+    partial void OnParentIdChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnEventTypeIdDestChanging(int value);
+    partial void OnEventTypeIdDestChanged();
+    partial void OnEventTypeGroupIdDestChanging(int value);
+    partial void OnEventTypeGroupIdDestChanged();
+    #endregion
+		
+		public ecnDisplayConditionGroup()
+		{
+			this._ecnDisplayCondition = new EntitySet<ecnDisplayCondition>(new Action<ecnDisplayCondition>(this.attach_ecnDisplayCondition), new Action<ecnDisplayCondition>(this.detach_ecnDisplayCondition));
+			this._ecnEventTypeGroup = default(EntityRef<ecnEventTypeGroup>);
+			this._ecnEventType = default(EntityRef<ecnEventType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="TinyInt NOT NULL")]
+		public byte Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this.OnTypeChanging(value);
+					this.SendPropertyChanging();
+					this._Type = value;
+					this.SendPropertyChanged("Type");
+					this.OnTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentId", DbType="Int NOT NULL")]
+		public int ParentId
+		{
+			get
+			{
+				return this._ParentId;
+			}
+			set
+			{
+				if ((this._ParentId != value))
+				{
+					this.OnParentIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentId = value;
+					this.SendPropertyChanged("ParentId");
+					this.OnParentIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeIdDest", DbType="Int NOT NULL")]
+		public int EventTypeIdDest
+		{
+			get
+			{
+				return this._EventTypeIdDest;
+			}
+			set
+			{
+				if ((this._EventTypeIdDest != value))
+				{
+					if (this._ecnEventType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeIdDestChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeIdDest = value;
+					this.SendPropertyChanged("EventTypeIdDest");
+					this.OnEventTypeIdDestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeGroupIdDest", DbType="Int NOT NULL")]
+		public int EventTypeGroupIdDest
+		{
+			get
+			{
+				return this._EventTypeGroupIdDest;
+			}
+			set
+			{
+				if ((this._EventTypeGroupIdDest != value))
+				{
+					if (this._ecnEventTypeGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeGroupIdDestChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeGroupIdDest = value;
+					this.SendPropertyChanged("EventTypeGroupIdDest");
+					this.OnEventTypeGroupIdDestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDisplayConditionGroup_ecnDisplayCondition", Storage="_ecnDisplayCondition", ThisKey="Id", OtherKey="ConditionGroupId")]
+		public EntitySet<ecnDisplayCondition> ecnDisplayCondition
+		{
+			get
+			{
+				return this._ecnDisplayCondition;
+			}
+			set
+			{
+				this._ecnDisplayCondition.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnDisplayConditionGroup", Storage="_ecnEventTypeGroup", ThisKey="EventTypeGroupIdDest", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventTypeGroup ecnEventTypeGroup
+		{
+			get
+			{
+				return this._ecnEventTypeGroup.Entity;
+			}
+			set
+			{
+				ecnEventTypeGroup previousValue = this._ecnEventTypeGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventTypeGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventTypeGroup.Entity = null;
+						previousValue.ecnDisplayConditionGroup.Remove(this);
+					}
+					this._ecnEventTypeGroup.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDisplayConditionGroup.Add(this);
+						this._EventTypeGroupIdDest = value.Id;
+					}
+					else
+					{
+						this._EventTypeGroupIdDest = default(int);
+					}
+					this.SendPropertyChanged("ecnEventTypeGroup");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnDisplayConditionGroup", Storage="_ecnEventType", ThisKey="EventTypeIdDest", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventType ecnEventType
+		{
+			get
+			{
+				return this._ecnEventType.Entity;
+			}
+			set
+			{
+				ecnEventType previousValue = this._ecnEventType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventType.Entity = null;
+						previousValue.ecnDisplayConditionGroup.Remove(this);
+					}
+					this._ecnEventType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDisplayConditionGroup.Add(this);
+						this._EventTypeIdDest = value.Id;
+					}
+					else
+					{
+						this._EventTypeIdDest = default(int);
+					}
+					this.SendPropertyChanged("ecnEventType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ecnDisplayCondition(ecnDisplayCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDisplayConditionGroup = this;
+		}
+		
+		private void detach_ecnDisplayCondition(ecnDisplayCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDisplayConditionGroup = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnEventTypeGroup")]
+	public partial class ecnEventTypeGroup : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private byte _CompanyId;
+		
+		private string _Name;
+		
+		private string _Description;
+		
+		private int _ObjectGroupId;
+		
+		private int _ParentId;
+		
+		private bool _EntrancePoint;
+		
+		private string _Address;
+		
+		private int _DeviceTypeId;
+		
+		private int _DataPointTypeId;
+		
+		private int _OrderIndex;
+		
+		private EntitySet<ecnEventTypeEventTypeGroupLink> _ecnEventTypeEventTypeGroupLink;
+		
+		private EntitySet<ecnEventTypeGroup> _ecnEventTypeGroup2;
+		
+		private EntitySet<ecnDisplayConditionGroup> _ecnDisplayConditionGroup;
+		
+		private EntityRef<ecnDatapointType> _ecnDatapointType;
+		
+		private EntityRef<ecnEventTypeGroup> _ecnEventTypeGroup1;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnObjectGroupIdChanging(int value);
+    partial void OnObjectGroupIdChanged();
+    partial void OnParentIdChanging(int value);
+    partial void OnParentIdChanged();
+    partial void OnEntrancePointChanging(bool value);
+    partial void OnEntrancePointChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnDeviceTypeIdChanging(int value);
+    partial void OnDeviceTypeIdChanged();
+    partial void OnDataPointTypeIdChanging(int value);
+    partial void OnDataPointTypeIdChanged();
+    partial void OnOrderIndexChanging(int value);
+    partial void OnOrderIndexChanged();
+    #endregion
+		
+		public ecnEventTypeGroup()
+		{
+			this._ecnEventTypeEventTypeGroupLink = new EntitySet<ecnEventTypeEventTypeGroupLink>(new Action<ecnEventTypeEventTypeGroupLink>(this.attach_ecnEventTypeEventTypeGroupLink), new Action<ecnEventTypeEventTypeGroupLink>(this.detach_ecnEventTypeEventTypeGroupLink));
+			this._ecnEventTypeGroup2 = new EntitySet<ecnEventTypeGroup>(new Action<ecnEventTypeGroup>(this.attach_ecnEventTypeGroup2), new Action<ecnEventTypeGroup>(this.detach_ecnEventTypeGroup2));
+			this._ecnDisplayConditionGroup = new EntitySet<ecnDisplayConditionGroup>(new Action<ecnDisplayConditionGroup>(this.attach_ecnDisplayConditionGroup), new Action<ecnDisplayConditionGroup>(this.detach_ecnDisplayConditionGroup));
+			this._ecnDatapointType = default(EntityRef<ecnDatapointType>);
+			this._ecnEventTypeGroup1 = default(EntityRef<ecnEventTypeGroup>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ObjectGroupId", DbType="Int NOT NULL")]
+		public int ObjectGroupId
+		{
+			get
+			{
+				return this._ObjectGroupId;
+			}
+			set
+			{
+				if ((this._ObjectGroupId != value))
+				{
+					this.OnObjectGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._ObjectGroupId = value;
+					this.SendPropertyChanged("ObjectGroupId");
+					this.OnObjectGroupIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ParentId", DbType="Int NOT NULL")]
+		public int ParentId
+		{
+			get
+			{
+				return this._ParentId;
+			}
+			set
+			{
+				if ((this._ParentId != value))
+				{
+					if (this._ecnEventTypeGroup1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnParentIdChanging(value);
+					this.SendPropertyChanging();
+					this._ParentId = value;
+					this.SendPropertyChanged("ParentId");
+					this.OnParentIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntrancePoint", DbType="Bit NOT NULL")]
+		public bool EntrancePoint
+		{
+			get
+			{
+				return this._EntrancePoint;
+			}
+			set
+			{
+				if ((this._EntrancePoint != value))
+				{
+					this.OnEntrancePointChanging(value);
+					this.SendPropertyChanging();
+					this._EntrancePoint = value;
+					this.SendPropertyChanged("EntrancePoint");
+					this.OnEntrancePointChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(MAX)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeviceTypeId", DbType="Int NOT NULL")]
+		public int DeviceTypeId
+		{
+			get
+			{
+				return this._DeviceTypeId;
+			}
+			set
+			{
+				if ((this._DeviceTypeId != value))
+				{
+					this.OnDeviceTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._DeviceTypeId = value;
+					this.SendPropertyChanged("DeviceTypeId");
+					this.OnDeviceTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataPointTypeId", DbType="Int NOT NULL")]
+		public int DataPointTypeId
+		{
+			get
+			{
+				return this._DataPointTypeId;
+			}
+			set
+			{
+				if ((this._DataPointTypeId != value))
+				{
+					if (this._ecnDatapointType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDataPointTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._DataPointTypeId = value;
+					this.SendPropertyChanged("DataPointTypeId");
+					this.OnDataPointTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderIndex", DbType="Int NOT NULL")]
+		public int OrderIndex
+		{
+			get
+			{
+				return this._OrderIndex;
+			}
+			set
+			{
+				if ((this._OrderIndex != value))
+				{
+					this.OnOrderIndexChanging(value);
+					this.SendPropertyChanging();
+					this._OrderIndex = value;
+					this.SendPropertyChanged("OrderIndex");
+					this.OnOrderIndexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeEventTypeGroupLink", ThisKey="Id", OtherKey="EventTypeGroupId")]
+		public EntitySet<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
+		{
+			get
+			{
+				return this._ecnEventTypeEventTypeGroupLink;
+			}
+			set
+			{
+				this._ecnEventTypeEventTypeGroupLink.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnEventTypeGroup", Storage="_ecnEventTypeGroup2", ThisKey="Id", OtherKey="ParentId")]
+		public EntitySet<ecnEventTypeGroup> ecnEventTypeGroup2
+		{
+			get
+			{
+				return this._ecnEventTypeGroup2;
+			}
+			set
+			{
+				this._ecnEventTypeGroup2.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnDisplayConditionGroup", Storage="_ecnDisplayConditionGroup", ThisKey="Id", OtherKey="EventTypeGroupIdDest")]
+		public EntitySet<ecnDisplayConditionGroup> ecnDisplayConditionGroup
+		{
+			get
+			{
+				return this._ecnDisplayConditionGroup;
+			}
+			set
+			{
+				this._ecnDisplayConditionGroup.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDatapointType_ecnEventTypeGroup", Storage="_ecnDatapointType", ThisKey="DataPointTypeId", OtherKey="Id", IsForeignKey=true)]
+		public ecnDatapointType ecnDatapointType
+		{
+			get
+			{
+				return this._ecnDatapointType.Entity;
+			}
+			set
+			{
+				ecnDatapointType previousValue = this._ecnDatapointType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnDatapointType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnDatapointType.Entity = null;
+						previousValue.ecnEventTypeGroup.Remove(this);
+					}
+					this._ecnDatapointType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventTypeGroup.Add(this);
+						this._DataPointTypeId = value.Id;
+					}
+					else
+					{
+						this._DataPointTypeId = default(int);
+					}
+					this.SendPropertyChanged("ecnDatapointType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnEventTypeGroup", Storage="_ecnEventTypeGroup1", ThisKey="ParentId", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventTypeGroup ecnEventTypeGroup1
+		{
+			get
+			{
+				return this._ecnEventTypeGroup1.Entity;
+			}
+			set
+			{
+				ecnEventTypeGroup previousValue = this._ecnEventTypeGroup1.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventTypeGroup1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventTypeGroup1.Entity = null;
+						previousValue.ecnEventTypeGroup2.Remove(this);
+					}
+					this._ecnEventTypeGroup1.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventTypeGroup2.Add(this);
+						this._ParentId = value.Id;
+					}
+					else
+					{
+						this._ParentId = default(int);
+					}
+					this.SendPropertyChanged("ecnEventTypeGroup1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventTypeGroup = this;
+		}
+		
+		private void detach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventTypeGroup = null;
+		}
+		
+		private void attach_ecnEventTypeGroup2(ecnEventTypeGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventTypeGroup1 = this;
+		}
+		
+		private void detach_ecnEventTypeGroup2(ecnEventTypeGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventTypeGroup1 = null;
+		}
+		
+		private void attach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventTypeGroup = this;
+		}
+		
+		private void detach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventTypeGroup = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnEventTypeEventTypeGroupLink")]
+	public partial class ecnEventTypeEventTypeGroupLink : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _CompanyId;
+		
+		private int _EventTypeId;
+		
+		private int _EventTypeGroupId;
+		
+		private int _EventTypeOrder;
+		
+		private EntityRef<ecnEventType> _ecnEventType;
+		
+		private EntityRef<ecnEventTypeGroup> _ecnEventTypeGroup;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnEventTypeIdChanging(int value);
+    partial void OnEventTypeIdChanged();
+    partial void OnEventTypeGroupIdChanging(int value);
+    partial void OnEventTypeGroupIdChanged();
+    partial void OnEventTypeOrderChanging(int value);
+    partial void OnEventTypeOrderChanged();
+    #endregion
+		
+		public ecnEventTypeEventTypeGroupLink()
+		{
+			this._ecnEventType = default(EntityRef<ecnEventType>);
+			this._ecnEventTypeGroup = default(EntityRef<ecnEventTypeGroup>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int EventTypeId
+		{
+			get
+			{
+				return this._EventTypeId;
+			}
+			set
+			{
+				if ((this._EventTypeId != value))
+				{
+					if (this._ecnEventType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeId = value;
+					this.SendPropertyChanged("EventTypeId");
+					this.OnEventTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeGroupId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int EventTypeGroupId
+		{
+			get
+			{
+				return this._EventTypeGroupId;
+			}
+			set
+			{
+				if ((this._EventTypeGroupId != value))
+				{
+					if (this._ecnEventTypeGroup.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeGroupIdChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeGroupId = value;
+					this.SendPropertyChanged("EventTypeGroupId");
+					this.OnEventTypeGroupIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeOrder", DbType="Int NOT NULL")]
+		public int EventTypeOrder
+		{
+			get
+			{
+				return this._EventTypeOrder;
+			}
+			set
+			{
+				if ((this._EventTypeOrder != value))
+				{
+					this.OnEventTypeOrderChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeOrder = value;
+					this.SendPropertyChanged("EventTypeOrder");
+					this.OnEventTypeOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventType", ThisKey="EventTypeId", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventType ecnEventType
+		{
+			get
+			{
+				return this._ecnEventType.Entity;
+			}
+			set
+			{
+				ecnEventType previousValue = this._ecnEventType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventType.Entity = null;
+						previousValue.ecnEventTypeEventTypeGroupLink.Remove(this);
+					}
+					this._ecnEventType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventTypeEventTypeGroupLink.Add(this);
+						this._EventTypeId = value.Id;
+					}
+					else
+					{
+						this._EventTypeId = default(int);
+					}
+					this.SendPropertyChanged("ecnEventType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeGroup", ThisKey="EventTypeGroupId", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventTypeGroup ecnEventTypeGroup
+		{
+			get
+			{
+				return this._ecnEventTypeGroup.Entity;
+			}
+			set
+			{
+				ecnEventTypeGroup previousValue = this._ecnEventTypeGroup.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventTypeGroup.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventTypeGroup.Entity = null;
+						previousValue.ecnEventTypeEventTypeGroupLink.Remove(this);
+					}
+					this._ecnEventTypeGroup.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventTypeEventTypeGroupLink.Add(this);
+						this._EventTypeGroupId = value.Id;
+					}
+					else
+					{
+						this._EventTypeGroupId = default(int);
+					}
+					this.SendPropertyChanged("ecnEventTypeGroup");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnEventValueType")]
+	public partial class ecnEventValueType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private byte _CompanyId;
+		
+		private string _Name;
+		
+		private System.Nullable<int> _EnumAddressValue;
+		
+		private string _EnumReplaceValue;
+		
+		private int _StatusTypeId;
+		
+		private string _Unit;
+		
+		private string _DataType;
+		
+		private System.Nullable<double> _Stepping;
+		
+		private System.Nullable<int> _ValuePrecision;
+		
+		private System.Nullable<double> _LowerBorder;
+		
+		private System.Nullable<double> _UpperBorder;
+		
+		private System.Nullable<int> _Length;
+		
+		private string _Description;
+		
+		private EntitySet<ecnDisplayCondition> _ecnDisplayCondition;
+		
+		private EntitySet<ecnEventGroupValueCache> _ecnEventGroupValueCache;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnEnumAddressValueChanging(System.Nullable<int> value);
+    partial void OnEnumAddressValueChanged();
+    partial void OnEnumReplaceValueChanging(string value);
+    partial void OnEnumReplaceValueChanged();
+    partial void OnStatusTypeIdChanging(int value);
+    partial void OnStatusTypeIdChanged();
+    partial void OnUnitChanging(string value);
+    partial void OnUnitChanged();
+    partial void OnDataTypeChanging(string value);
+    partial void OnDataTypeChanged();
+    partial void OnSteppingChanging(System.Nullable<double> value);
+    partial void OnSteppingChanged();
+    partial void OnValuePrecisionChanging(System.Nullable<int> value);
+    partial void OnValuePrecisionChanged();
+    partial void OnLowerBorderChanging(System.Nullable<double> value);
+    partial void OnLowerBorderChanged();
+    partial void OnUpperBorderChanging(System.Nullable<double> value);
+    partial void OnUpperBorderChanged();
+    partial void OnLengthChanging(System.Nullable<int> value);
+    partial void OnLengthChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public ecnEventValueType()
+		{
+			this._ecnDisplayCondition = new EntitySet<ecnDisplayCondition>(new Action<ecnDisplayCondition>(this.attach_ecnDisplayCondition), new Action<ecnDisplayCondition>(this.detach_ecnDisplayCondition));
+			this._ecnEventGroupValueCache = new EntitySet<ecnEventGroupValueCache>(new Action<ecnEventGroupValueCache>(this.attach_ecnEventGroupValueCache), new Action<ecnEventGroupValueCache>(this.detach_ecnEventGroupValueCache));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(255)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnumAddressValue", DbType="Int")]
+		public System.Nullable<int> EnumAddressValue
+		{
+			get
+			{
+				return this._EnumAddressValue;
+			}
+			set
+			{
+				if ((this._EnumAddressValue != value))
+				{
+					this.OnEnumAddressValueChanging(value);
+					this.SendPropertyChanging();
+					this._EnumAddressValue = value;
+					this.SendPropertyChanged("EnumAddressValue");
+					this.OnEnumAddressValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EnumReplaceValue", DbType="VarChar(255)")]
+		public string EnumReplaceValue
+		{
+			get
+			{
+				return this._EnumReplaceValue;
+			}
+			set
+			{
+				if ((this._EnumReplaceValue != value))
+				{
+					this.OnEnumReplaceValueChanging(value);
+					this.SendPropertyChanging();
+					this._EnumReplaceValue = value;
+					this.SendPropertyChanged("EnumReplaceValue");
+					this.OnEnumReplaceValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusTypeId", DbType="Int NOT NULL")]
+		public int StatusTypeId
+		{
+			get
+			{
+				return this._StatusTypeId;
+			}
+			set
+			{
+				if ((this._StatusTypeId != value))
+				{
+					this.OnStatusTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._StatusTypeId = value;
+					this.SendPropertyChanged("StatusTypeId");
+					this.OnStatusTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Unit", DbType="VarChar(255)")]
+		public string Unit
+		{
+			get
+			{
+				return this._Unit;
+			}
+			set
+			{
+				if ((this._Unit != value))
+				{
+					this.OnUnitChanging(value);
+					this.SendPropertyChanging();
+					this._Unit = value;
+					this.SendPropertyChanged("Unit");
+					this.OnUnitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataType", DbType="VarChar(255)")]
+		public string DataType
+		{
+			get
+			{
+				return this._DataType;
+			}
+			set
+			{
+				if ((this._DataType != value))
+				{
+					this.OnDataTypeChanging(value);
+					this.SendPropertyChanging();
+					this._DataType = value;
+					this.SendPropertyChanged("DataType");
+					this.OnDataTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stepping", DbType="Float")]
+		public System.Nullable<double> Stepping
+		{
+			get
+			{
+				return this._Stepping;
+			}
+			set
+			{
+				if ((this._Stepping != value))
+				{
+					this.OnSteppingChanging(value);
+					this.SendPropertyChanging();
+					this._Stepping = value;
+					this.SendPropertyChanged("Stepping");
+					this.OnSteppingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ValuePrecision", DbType="Int")]
+		public System.Nullable<int> ValuePrecision
+		{
+			get
+			{
+				return this._ValuePrecision;
+			}
+			set
+			{
+				if ((this._ValuePrecision != value))
+				{
+					this.OnValuePrecisionChanging(value);
+					this.SendPropertyChanging();
+					this._ValuePrecision = value;
+					this.SendPropertyChanged("ValuePrecision");
+					this.OnValuePrecisionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LowerBorder", DbType="Float")]
+		public System.Nullable<double> LowerBorder
+		{
+			get
+			{
+				return this._LowerBorder;
+			}
+			set
+			{
+				if ((this._LowerBorder != value))
+				{
+					this.OnLowerBorderChanging(value);
+					this.SendPropertyChanging();
+					this._LowerBorder = value;
+					this.SendPropertyChanged("LowerBorder");
+					this.OnLowerBorderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpperBorder", DbType="Float")]
+		public System.Nullable<double> UpperBorder
+		{
+			get
+			{
+				return this._UpperBorder;
+			}
+			set
+			{
+				if ((this._UpperBorder != value))
+				{
+					this.OnUpperBorderChanging(value);
+					this.SendPropertyChanging();
+					this._UpperBorder = value;
+					this.SendPropertyChanged("UpperBorder");
+					this.OnUpperBorderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Length", DbType="Int")]
+		public System.Nullable<int> Length
+		{
+			get
+			{
+				return this._Length;
+			}
+			set
+			{
+				if ((this._Length != value))
+				{
+					this.OnLengthChanging(value);
+					this.SendPropertyChanging();
+					this._Length = value;
+					this.SendPropertyChanged("Length");
+					this.OnLengthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventValueType_ecnDisplayCondition", Storage="_ecnDisplayCondition", ThisKey="Id", OtherKey="EventTypeValueCondition")]
+		public EntitySet<ecnDisplayCondition> ecnDisplayCondition
+		{
+			get
+			{
+				return this._ecnDisplayCondition;
+			}
+			set
+			{
+				this._ecnDisplayCondition.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventValueType_ecnEventGroupValueCache", Storage="_ecnEventGroupValueCache", ThisKey="Id,CompanyId", OtherKey="EventValueTypeId,CompanyId")]
+		public EntitySet<ecnEventGroupValueCache> ecnEventGroupValueCache
+		{
+			get
+			{
+				return this._ecnEventGroupValueCache;
+			}
+			set
+			{
+				this._ecnEventGroupValueCache.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ecnDisplayCondition(ecnDisplayCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventValueType = this;
+		}
+		
+		private void detach_ecnDisplayCondition(ecnDisplayCondition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventValueType = null;
+		}
+		
+		private void attach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventValueType = this;
+		}
+		
+		private void detach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnEventValueType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnEventGroupValueCache")]
+	public partial class ecnEventGroupValueCache : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private byte _CompanyId;
+		
+		private int _DeviceId;
+		
+		private int _DataPointId;
+		
+		private int _EventTypeId;
+		
+		private int _EventValueTypeId;
+		
+		private byte _ValueState;
+		
+		private System.Nullable<int> _StatusTypeId;
+		
+		private System.Nullable<int> _ValueType;
+		
+		private System.Nullable<bool> _Value_Bit;
+		
+		private System.Nullable<int> _Value_Int;
+		
+		private System.Nullable<double> _Value_Float;
+		
+		private string _Value_Ntext;
+		
+		private string _Value_VarChar;
+		
+		private System.Nullable<System.DateTime> _Value_DateTime;
+		
+		private System.Data.Linq.Binary _Value_Binary;
+		
+		private string _ValueUnit;
+		
+		private System.DateTime _ValueEventTime;
+		
+		private EntityRef<ecnEventValueType> _ecnEventValueType;
+		
+		private EntityRef<ecnEventType> _ecnEventType;
+		
+		private EntityRef<ecnDisplayCondition> _ecnDisplayCondition;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnDeviceIdChanging(int value);
+    partial void OnDeviceIdChanged();
+    partial void OnDataPointIdChanging(int value);
+    partial void OnDataPointIdChanged();
+    partial void OnEventTypeIdChanging(int value);
+    partial void OnEventTypeIdChanged();
+    partial void OnEventValueTypeIdChanging(int value);
+    partial void OnEventValueTypeIdChanged();
+    partial void OnValueStateChanging(byte value);
+    partial void OnValueStateChanged();
+    partial void OnStatusTypeIdChanging(System.Nullable<int> value);
+    partial void OnStatusTypeIdChanged();
+    partial void OnValueTypeChanging(System.Nullable<int> value);
+    partial void OnValueTypeChanged();
+    partial void OnValue_BitChanging(System.Nullable<bool> value);
+    partial void OnValue_BitChanged();
+    partial void OnValue_IntChanging(System.Nullable<int> value);
+    partial void OnValue_IntChanged();
+    partial void OnValue_FloatChanging(System.Nullable<double> value);
+    partial void OnValue_FloatChanged();
+    partial void OnValue_NtextChanging(string value);
+    partial void OnValue_NtextChanged();
+    partial void OnValue_VarCharChanging(string value);
+    partial void OnValue_VarCharChanged();
+    partial void OnValue_DateTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnValue_DateTimeChanged();
+    partial void OnValue_BinaryChanging(System.Data.Linq.Binary value);
+    partial void OnValue_BinaryChanged();
+    partial void OnValueUnitChanging(string value);
+    partial void OnValueUnitChanged();
+    partial void OnValueEventTimeChanging(System.DateTime value);
+    partial void OnValueEventTimeChanged();
+    #endregion
+		
+		public ecnEventGroupValueCache()
+		{
+			this._ecnEventValueType = default(EntityRef<ecnEventValueType>);
+			this._ecnEventType = default(EntityRef<ecnEventType>);
+			this._ecnDisplayCondition = default(EntityRef<ecnDisplayCondition>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					if (this._ecnEventValueType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeviceId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int DeviceId
+		{
+			get
+			{
+				return this._DeviceId;
+			}
+			set
+			{
+				if ((this._DeviceId != value))
+				{
+					this.OnDeviceIdChanging(value);
+					this.SendPropertyChanging();
+					this._DeviceId = value;
+					this.SendPropertyChanged("DeviceId");
+					this.OnDeviceIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataPointId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int DataPointId
+		{
+			get
+			{
+				return this._DataPointId;
+			}
+			set
+			{
+				if ((this._DataPointId != value))
+				{
+					this.OnDataPointIdChanging(value);
+					this.SendPropertyChanging();
+					this._DataPointId = value;
+					this.SendPropertyChanged("DataPointId");
+					this.OnDataPointIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventTypeId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int EventTypeId
+		{
+			get
+			{
+				return this._EventTypeId;
+			}
+			set
+			{
+				if ((this._EventTypeId != value))
+				{
+					if ((this._ecnEventType.HasLoadedOrAssignedValue || this._ecnDisplayCondition.HasLoadedOrAssignedValue))
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._EventTypeId = value;
+					this.SendPropertyChanged("EventTypeId");
+					this.OnEventTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventValueTypeId", DbType="Int NOT NULL")]
+		public int EventValueTypeId
+		{
+			get
+			{
+				return this._EventValueTypeId;
+			}
+			set
+			{
+				if ((this._EventValueTypeId != value))
+				{
+					if ((this._ecnEventValueType.HasLoadedOrAssignedValue || this._ecnDisplayCondition.HasLoadedOrAssignedValue))
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnEventValueTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._EventValueTypeId = value;
+					this.SendPropertyChanged("EventValueTypeId");
+					this.OnEventValueTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ValueState", DbType="TinyInt NOT NULL")]
+		public byte ValueState
+		{
+			get
+			{
+				return this._ValueState;
+			}
+			set
+			{
+				if ((this._ValueState != value))
+				{
+					this.OnValueStateChanging(value);
+					this.SendPropertyChanging();
+					this._ValueState = value;
+					this.SendPropertyChanged("ValueState");
+					this.OnValueStateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusTypeId", DbType="Int")]
+		public System.Nullable<int> StatusTypeId
+		{
+			get
+			{
+				return this._StatusTypeId;
+			}
+			set
+			{
+				if ((this._StatusTypeId != value))
+				{
+					this.OnStatusTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._StatusTypeId = value;
+					this.SendPropertyChanged("StatusTypeId");
+					this.OnStatusTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ValueType", DbType="Int")]
+		public System.Nullable<int> ValueType
+		{
+			get
+			{
+				return this._ValueType;
+			}
+			set
+			{
+				if ((this._ValueType != value))
+				{
+					this.OnValueTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ValueType = value;
+					this.SendPropertyChanged("ValueType");
+					this.OnValueTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_Bit", DbType="Bit")]
+		public System.Nullable<bool> Value_Bit
+		{
+			get
+			{
+				return this._Value_Bit;
+			}
+			set
+			{
+				if ((this._Value_Bit != value))
+				{
+					this.OnValue_BitChanging(value);
+					this.SendPropertyChanging();
+					this._Value_Bit = value;
+					this.SendPropertyChanged("Value_Bit");
+					this.OnValue_BitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_Int", DbType="Int")]
+		public System.Nullable<int> Value_Int
+		{
+			get
+			{
+				return this._Value_Int;
+			}
+			set
+			{
+				if ((this._Value_Int != value))
+				{
+					this.OnValue_IntChanging(value);
+					this.SendPropertyChanging();
+					this._Value_Int = value;
+					this.SendPropertyChanged("Value_Int");
+					this.OnValue_IntChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_Float", DbType="Float")]
+		public System.Nullable<double> Value_Float
+		{
+			get
+			{
+				return this._Value_Float;
+			}
+			set
+			{
+				if ((this._Value_Float != value))
+				{
+					this.OnValue_FloatChanging(value);
+					this.SendPropertyChanging();
+					this._Value_Float = value;
+					this.SendPropertyChanged("Value_Float");
+					this.OnValue_FloatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_Ntext", DbType="NVarChar(MAX)")]
+		public string Value_Ntext
+		{
+			get
+			{
+				return this._Value_Ntext;
+			}
+			set
+			{
+				if ((this._Value_Ntext != value))
+				{
+					this.OnValue_NtextChanging(value);
+					this.SendPropertyChanging();
+					this._Value_Ntext = value;
+					this.SendPropertyChanged("Value_Ntext");
+					this.OnValue_NtextChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_VarChar", DbType="NVarChar(MAX)")]
+		public string Value_VarChar
+		{
+			get
+			{
+				return this._Value_VarChar;
+			}
+			set
+			{
+				if ((this._Value_VarChar != value))
+				{
+					this.OnValue_VarCharChanging(value);
+					this.SendPropertyChanging();
+					this._Value_VarChar = value;
+					this.SendPropertyChanged("Value_VarChar");
+					this.OnValue_VarCharChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_DateTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Value_DateTime
+		{
+			get
+			{
+				return this._Value_DateTime;
+			}
+			set
+			{
+				if ((this._Value_DateTime != value))
+				{
+					this.OnValue_DateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._Value_DateTime = value;
+					this.SendPropertyChanged("Value_DateTime");
+					this.OnValue_DateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value_Binary", DbType="VarBinary(8000)", UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Value_Binary
+		{
+			get
+			{
+				return this._Value_Binary;
+			}
+			set
+			{
+				if ((this._Value_Binary != value))
+				{
+					this.OnValue_BinaryChanging(value);
+					this.SendPropertyChanging();
+					this._Value_Binary = value;
+					this.SendPropertyChanged("Value_Binary");
+					this.OnValue_BinaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ValueUnit", DbType="NVarChar(255)")]
+		public string ValueUnit
+		{
+			get
+			{
+				return this._ValueUnit;
+			}
+			set
+			{
+				if ((this._ValueUnit != value))
+				{
+					this.OnValueUnitChanging(value);
+					this.SendPropertyChanging();
+					this._ValueUnit = value;
+					this.SendPropertyChanged("ValueUnit");
+					this.OnValueUnitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ValueEventTime", DbType="DateTime NOT NULL")]
+		public System.DateTime ValueEventTime
+		{
+			get
+			{
+				return this._ValueEventTime;
+			}
+			set
+			{
+				if ((this._ValueEventTime != value))
+				{
+					this.OnValueEventTimeChanging(value);
+					this.SendPropertyChanging();
+					this._ValueEventTime = value;
+					this.SendPropertyChanged("ValueEventTime");
+					this.OnValueEventTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventValueType_ecnEventGroupValueCache", Storage="_ecnEventValueType", ThisKey="EventValueTypeId,CompanyId", OtherKey="Id,CompanyId", IsForeignKey=true)]
+		public ecnEventValueType ecnEventValueType
+		{
+			get
+			{
+				return this._ecnEventValueType.Entity;
+			}
+			set
+			{
+				ecnEventValueType previousValue = this._ecnEventValueType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventValueType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventValueType.Entity = null;
+						previousValue.ecnEventGroupValueCache.Remove(this);
+					}
+					this._ecnEventValueType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventGroupValueCache.Add(this);
+						this._EventValueTypeId = value.Id;
+						this._CompanyId = value.CompanyId;
+					}
+					else
+					{
+						this._EventValueTypeId = default(int);
+						this._CompanyId = default(byte);
+					}
+					this.SendPropertyChanged("ecnEventValueType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnEventGroupValueCache", Storage="_ecnEventType", ThisKey="EventTypeId", OtherKey="Id", IsForeignKey=true)]
+		public ecnEventType ecnEventType
+		{
+			get
+			{
+				return this._ecnEventType.Entity;
+			}
+			set
+			{
+				ecnEventType previousValue = this._ecnEventType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnEventType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnEventType.Entity = null;
+						previousValue.ecnEventGroupValueCache.Remove(this);
+					}
+					this._ecnEventType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventGroupValueCache.Add(this);
+						this._EventTypeId = value.Id;
+					}
+					else
+					{
+						this._EventTypeId = default(int);
+					}
+					this.SendPropertyChanged("ecnEventType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDisplayCondition_ecnEventGroupValueCache", Storage="_ecnDisplayCondition", ThisKey="EventTypeId,EventValueTypeId", OtherKey="EventTypeIdCondition,EventTypeValueCondition", IsForeignKey=true)]
+		public ecnDisplayCondition ecnDisplayCondition
+		{
+			get
+			{
+				return this._ecnDisplayCondition.Entity;
+			}
+			set
+			{
+				ecnDisplayCondition previousValue = this._ecnDisplayCondition.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnDisplayCondition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnDisplayCondition.Entity = null;
+						previousValue.ecnEventGroupValueCache.Remove(this);
+					}
+					this._ecnDisplayCondition.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventGroupValueCache.Add(this);
+						this._EventTypeId = value.EventTypeIdCondition;
+						this._EventValueTypeId = value.EventTypeValueCondition;
+					}
+					else
+					{
+						this._EventTypeId = default(int);
+						this._EventValueTypeId = default(int);
+					}
+					this.SendPropertyChanged("ecnDisplayCondition");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
