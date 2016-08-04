@@ -15,26 +15,39 @@ namespace viessmannAdr
     class Program
     {
         static Dictionary<string, string> textValues = new Dictionary<string, string>();
+        static HashSet<string> setOfAdrForFile = new HashSet<string>();
+        static DataClasses1DataContext dc = new DataClasses1DataContext();
 
         static void Main(string[] args)
         {
             initTextValues();
+            //fetchAdrFromStatistics();
+            fetchAdrFromEventGroup(19130);
+            generateVitoXML();
+            Console.ReadKey();
+        }
 
-            var dc = new DataClasses1DataContext();
-
+        private static void fetchAdrFromEventGroup(int id)
+        {
             var query = from g in dc.ecnEventTypeGroup
                         where g.DataPointTypeId == 350
-                        && g.ParentId == -1 
+                        && g.ParentId == -1
                         && (g.ecnEventTypeGroup2.Any() || g.ecnEventTypeEventTypeGroupLink.Any())
                         select g;
 
+            if (id != 0)
+                query = query.Where(g => g.Id == id);
+
             foreach (var g in query)
             {
-                printEventGroup(0, g);
-                Console.WriteLine();
-                Console.ReadKey();
+                printEventGroup(0, g, id == 0);
+
+                if (id == 0)
+                {
+                    Console.WriteLine();
+                    Console.ReadKey();
+                }
             }
-            Console.ReadKey();
         }
 
         private static void initTextValues()
@@ -56,7 +69,7 @@ namespace viessmannAdr
             return ret.Trim();
         }
 
-        static void printEventGroup(int indent, ecnEventTypeGroup g)
+        static void printEventGroup(int indent, ecnEventTypeGroup g, bool print)
         {
             var name = trans(g.Name);
             bool showResult = true;
@@ -66,7 +79,8 @@ namespace viessmannAdr
             if (hideGroup && showResult)
                 return;
 
-            Console.WriteLine(new string(' ', indent) + "G " + name + (hideGroup? " (Hidden) ":" ") + g.OrderIndex);
+            if(print)
+                Console.WriteLine(new string(' ', indent) + "G (" + g.Id +") " + name + (hideGroup? " (Hidden) ":" ") + g.OrderIndex);
             EvalConditions(indent + 8, g.ecnDisplayConditionGroup, !showResult);
 
             g.ecnEventTypeEventTypeGroupLink.Load();
@@ -80,14 +94,16 @@ namespace viessmannAdr
                 var hide = EvalConditions(indent + 16, evl.ecnEventType.ecnDisplayConditionGroup, false);
                 if (!hide || !showResult)
                 {
-                    Console.WriteLine(new string(' ', indent + 8) + "E " + evName + (hide ? " (Hidden)" : ""));
+                    if(print)
+                        Console.WriteLine(new string(' ', indent + 8) + "E " + evName + (hide ? " (Hidden)" : ""));
                     EvalConditions(indent + 16, evl.ecnEventType.ecnDisplayConditionGroup, !showResult);
+                    setOfAdrForFile.Add(evl.ecnEventType.Address);
                 }
             }
 
             g.ecnEventTypeGroup2.Load();
             foreach (var sg in g.ecnEventTypeGroup2.OrderBy(o => o.OrderIndex))
-                printEventGroup(indent + 8, sg);
+                printEventGroup(indent + 8, sg, print);
         }
 
         private static bool EvalConditions(int indent, EntitySet<ecnDisplayConditionGroup> g, bool debug)
@@ -135,61 +151,41 @@ namespace viessmannAdr
 
         static void generateVitoXML()
         {
-            HashSet<string> set = new HashSet<string>();
-            var reader = new StreamReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\log\statistic.log");
-            string line = reader.ReadLine();
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (!line.Contains(";"))
-                    continue;
-                var parts = line.Split(';');
-                if (parts.Length != 8)
-                    continue;
-                var part = parts[5];
-                set.Add(part);
-            }
-
+            
             Dictionary<string, EventTypesEventType> evTypes = new Dictionary<string, EventTypesEventType>();
             Dictionary<string, string> textValues = new Dictionary<string, string>();
 
             XmlSerializer evSerializer = new XmlSerializer(typeof(EventTypes));
             XmlSerializer trSerializer = new XmlSerializer(typeof(TextResources));
 
-            TextResources tr = (TextResources)trSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\Web\XmlDocuments\Textresource_de_tk.xml"));
-            foreach (var item in tr.Items)
-                textValues[item.Label] = item.Value;
-
-
             var evDict = new Dictionary<string, string>();
             var dc = new DataClasses1DataContext();
             var query = from t in dc.ecnDataPointTypeEventTypeLink
-                        where t.DataPointTypeId == 350
-                        select new { t.ecnEventType.Address, t.ecnEventType.Name};
+                        //where t.DataPointTypeId == 350
+                        select new { t.ecnEventType.Address, t.ecnEventType.Name };
             foreach (var item in query)
-            {
-                var namekey = item.Name.Trim('@');
-                if (textValues.ContainsKey(namekey))
-                    evDict[item.Address] = textValues[item.Name.Trim('@')];
-                else
-                    evDict[item.Address] = namekey;
-            }
+                evDict[item.Address] = trans(item.Name);
 
-            List<EventTypesEventType> allEvTypes = new List<EventTypesEventType>();
+            var allEvTypes = new Dictionary<string, EventTypesEventType>();
             EventTypes types = (EventTypes)evSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\Config\ecnEventType.xml"));
-            allEvTypes.AddRange(types.Items);
+            foreach (var item in types.Items)
+                allEvTypes[item.ID] = item;
             types = (EventTypes)evSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\Config\sysDeviceIdent.xml"));
-            allEvTypes.AddRange(types.Items);
+            foreach (var item in types.Items)
+                allEvTypes[item.ID] = item;
             types = (EventTypes)evSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\Config\sysDeviceIdentExt.xml"));
-            allEvTypes.AddRange(types.Items);
+            foreach (var item in types.Items)
+                allEvTypes[item.ID] = item;
 
             List<EventTypesEventType> wantedEvTypes = new List<EventTypesEventType>();
             int count = 0;
-            foreach (var t in allEvTypes)
+            foreach (var a in setOfAdrForFile)
             {
+                var t = allEvTypes[a];
                 if (!evDict.ContainsKey(t.ID) && !(t.Name != null && t.Name.StartsWith("sys")) || string.IsNullOrEmpty(t.Address))
                     continue;
 
-                if (!set.Contains(t.ID))
+                if (!setOfAdrForFile.Contains(t.ID))
                     continue;
 
                 //if (t.BitLength == "0")
@@ -206,32 +202,25 @@ namespace viessmannAdr
 
                 if (t.Description != null)
                 {
-                    var descKey = t.Description.Trim('@');
-                    if (textValues.ContainsKey(descKey))
-                        t.Description=textValues[descKey].Replace("##ecnnewline##", "\n").Replace("##ecntab##", "\t");
+                    t.Description = trans(t.Description).Replace("##ecnnewline##", "\n").Replace("##ecntab##", "\t");
                 }
                 if (t.ValueList != null)
                 {
                     var builder = new StringBuilder();
                     var values = t.ValueList.Split(';');
-                    foreach(var value in values)
+                    foreach (var value in values)
                     {
                         var pair = value.Split('=');
                         builder.Append(pair[0]);
                         builder.Append("=");
-                        var descKey = pair[1].Trim('@');
-                        if (textValues.ContainsKey(descKey))
-                            builder.Append(textValues[descKey]);
-                        else
-                            builder.Append(descKey);
+                        builder.Append(trans(pair[1]));
                         builder.Append(";");
                     }
                     t.ValueList = builder.ToString().Trim(';');
                 }
                 if (t.Unit != null)
                 {
-                    if (textValues.ContainsKey(t.Unit))
-                        t.Unit = textValues[t.Unit];
+                    t.Unit = trans(t.Unit);
                 }
                 count++;
             }
@@ -273,6 +262,22 @@ namespace viessmannAdr
 
             Console.WriteLine("Fertig");
             Thread.Sleep(1000);
+        }
+
+        private static void fetchAdrFromStatistics()
+        {
+            var reader = new StreamReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\log\statistic.log");
+            string line = reader.ReadLine();
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (!line.Contains(";"))
+                    continue;
+                var parts = line.Split(';');
+                if (parts.Length != 8)
+                    continue;
+                var part = parts[5];
+                setOfAdrForFile.Add(part);
+            }
         }
     }
 }
