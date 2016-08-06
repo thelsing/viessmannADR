@@ -15,16 +15,33 @@ namespace viessmannAdr
     class Program
     {
         static Dictionary<string, string> textValues = new Dictionary<string, string>();
-        static HashSet<string> setOfAdrForFile = new HashSet<string>();
+        static List<string> addessesForFile = new List<string>();
         static DataClasses1DataContext dc = new DataClasses1DataContext();
-
         static void Main(string[] args)
         {
             initTextValues();
+
+            var query = from g in dc.ecnEventTypeGroup
+                        where g.DataPointTypeId == 350
+                        && g.ParentId == -1
+                        && (g.ecnEventTypeGroup2.Any() || g.ecnEventTypeEventTypeGroupLink.Any())
+                        select g;
+
             //fetchAdrFromStatistics();
-            fetchAdrFromEventGroup(19130);
-            generateVitoXML();
+            foreach (var g in query)
+            {
+                fetchAdrFromEventGroup(g.Id);
+                //fetchAdrFromEventGroup(0);
+                generateVitoXML(g);
+                addessesForFile.Clear();
+            }
             Console.ReadKey();
+        }
+
+        private static void addIfNotThere(ecnEventType evt)
+        {
+            if (!addessesForFile.Contains(evt.Address))
+                addessesForFile.Add(evt.Address);
         }
 
         private static void fetchAdrFromEventGroup(int id)
@@ -36,7 +53,9 @@ namespace viessmannAdr
                         select g;
 
             if (id != 0)
-                query = query.Where(g => g.Id == id);
+                query = from g in dc.ecnEventTypeGroup
+                        where g.Id == id
+                        select g;
 
             foreach (var g in query)
             {
@@ -79,8 +98,8 @@ namespace viessmannAdr
             if (hideGroup && showResult)
                 return;
 
-            if(print)
-                Console.WriteLine(new string(' ', indent) + "G (" + g.Id +") " + name + (hideGroup? " (Hidden) ":" ") + g.OrderIndex);
+            if (print)
+                Console.WriteLine(new string(' ', indent) + "G (" + g.Id + ") " + name + (hideGroup ? " (Hidden) " : " ") + g.OrderIndex);
             EvalConditions(indent + 8, g.ecnDisplayConditionGroup, !showResult);
 
             g.ecnEventTypeEventTypeGroupLink.Load();
@@ -94,10 +113,10 @@ namespace viessmannAdr
                 var hide = EvalConditions(indent + 16, evl.ecnEventType.ecnDisplayConditionGroup, false);
                 if (!hide || !showResult)
                 {
-                    if(print)
+                    if (print)
                         Console.WriteLine(new string(' ', indent + 8) + "E " + evName + (hide ? " (Hidden)" : ""));
                     EvalConditions(indent + 16, evl.ecnEventType.ecnDisplayConditionGroup, !showResult);
-                    setOfAdrForFile.Add(evl.ecnEventType.Address);
+                    addIfNotThere(evl.ecnEventType);
                 }
             }
 
@@ -109,7 +128,7 @@ namespace viessmannAdr
         private static bool EvalConditions(int indent, EntitySet<ecnDisplayConditionGroup> g, bool debug)
         {
             bool ret = false;
-            foreach(var c in g)
+            foreach (var c in g)
             {
                 c.ecnDisplayCondition.Load();
                 bool cond = false;
@@ -142,16 +161,16 @@ namespace viessmannAdr
                         value = !value;
 
                     Console.WriteLine(new string(' ', indent + 8) + trans(co.ecnEventType.Name) + " " +
-                        (co.EqualCondition ? "==" : "!=") + " " + trans(co.ecnEventValueType.Name) + 
+                        (co.EqualCondition ? "==" : "!=") + " " + trans(co.ecnEventValueType.Name) +
                         " (" + value + ")");
                 }
             }
             return ret;
         }
 
-        static void generateVitoXML()
+        static void generateVitoXML(ecnEventTypeGroup g)
         {
-            
+
             Dictionary<string, EventTypesEventType> evTypes = new Dictionary<string, EventTypesEventType>();
             Dictionary<string, string> textValues = new Dictionary<string, string>();
 
@@ -161,7 +180,7 @@ namespace viessmannAdr
             var evDict = new Dictionary<string, string>();
             var dc = new DataClasses1DataContext();
             var query = from t in dc.ecnDataPointTypeEventTypeLink
-                        //where t.DataPointTypeId == 350
+                            //where t.DataPointTypeId == 350
                         select new { t.ecnEventType.Address, t.ecnEventType.Name };
             foreach (var item in query)
                 evDict[item.Address] = trans(item.Name);
@@ -179,13 +198,13 @@ namespace viessmannAdr
 
             List<EventTypesEventType> wantedEvTypes = new List<EventTypesEventType>();
             int count = 0;
-            foreach (var a in setOfAdrForFile)
+            foreach (var a in addessesForFile)
             {
                 var t = allEvTypes[a];
                 if (!evDict.ContainsKey(t.ID) && !(t.Name != null && t.Name.StartsWith("sys")) || string.IsNullOrEmpty(t.Address))
                     continue;
 
-                if (!setOfAdrForFile.Contains(t.ID))
+                if (!addessesForFile.Contains(t.ID))
                     continue;
 
                 //if (t.BitLength == "0")
@@ -224,9 +243,13 @@ namespace viessmannAdr
                 }
                 count++;
             }
+            //foreach(var conv in wantedEvTypes.Select(ev => ev.Conversion).Distinct())
+            //    Console.WriteLine(conv);
+
             Console.WriteLine("found " + count + "items");
             EventTypes toWriteOut = new EventTypes();
             toWriteOut.Items = wantedEvTypes.OrderBy(t => t.Address).ToArray();
+
 
             TextWriter writer = new StreamWriter("eventTypes.xml");
             evSerializer.Serialize(writer, toWriteOut);
@@ -234,17 +257,27 @@ namespace viessmannAdr
 
             XElement commands = new XElement("commands");
             foreach (var i in toWriteOut.Items)
-                commands.Add(
-                    new XElement("command", new XAttribute("name", "get_" + i.ID),
+            {
+                
+               var cmd =  new XElement("command", new XAttribute("name", "get_" + i.ID),
                              new XAttribute("protocmd", "getaddr"),
                         new XElement("shortDescription", i.Name),
                         new XElement("addr", i.Address.Substring(2)),
                         new XElement("blockLength", i.BlockLength),
                         new XElement("byteLength", i.ByteLength),
+                        new XElement("bytePosition", i.BytePosition),
                         new XElement("bitPosition", i.BitPosition),
                         new XElement("bitLength", i.BitLength),
-                        new XElement("description", i.Description)
-                    ));
+                        new XElement("description", i.Description),
+                        new XElement("parameter", i.Parameter),
+                        new XElement("conversion", i.Conversion),
+                        new XElement("conversionFactor", i.ConversionFactor),
+                        new XElement("conversionOffset", i.ConversionOffset)
+                    );
+                //if (i.ValueList != null)
+                //    cmd.Add(new XElement("valueList", i.ValueList));
+                commands.Add(cmd);
+            }
 
             XElement vito = new XElement("vito",
                 new XElement("devices",
@@ -254,7 +287,7 @@ namespace viessmannAdr
                 ),
                 commands);
 
-            TextWriter writer2 = new StreamWriter("vito.xml");
+            TextWriter writer2 = new StreamWriter(trans(g.Name) + "_vito.xml");
             writer2.Write(vito);
             writer2.Close();
 
@@ -276,7 +309,7 @@ namespace viessmannAdr
                 if (parts.Length != 8)
                     continue;
                 var part = parts[5];
-                setOfAdrForFile.Add(part);
+                addessesForFile.Add(part);
             }
         }
     }
