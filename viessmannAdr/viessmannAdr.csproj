@@ -72,7 +72,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Textresource_de_tk.cs" />
+    <Compile Include="Textresource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

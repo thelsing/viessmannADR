@@ -57,10 +57,13 @@ namespace viessmannAdr
     partial void InsertecnEventGroupValueCache(ecnEventGroupValueCache instance);
     partial void UpdateecnEventGroupValueCache(ecnEventGroupValueCache instance);
     partial void DeleteecnEventGroupValueCache(ecnEventGroupValueCache instance);
+    partial void InsertecnDataPoint(ecnDataPoint instance);
+    partial void UpdateecnDataPoint(ecnDataPoint instance);
+    partial void DeleteecnDataPoint(ecnDataPoint instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::viessmannAdr.Properties.Settings.Default.ecnViessmannConnectionString, mappingSource)
+				base(global::viessmannAdr.Properties.Settings.Default.ecnViessmannConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -158,6 +161,14 @@ namespace viessmannAdr
 			get
 			{
 				return this.GetTable<ecnEventGroupValueCache>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ecnDataPoint> ecnDataPoint
+		{
+			get
+			{
+				return this.GetTable<ecnDataPoint>();
 			}
 		}
 	}
@@ -390,11 +401,11 @@ namespace viessmannAdr
 		
 		private EntitySet<ecnDataPointTypeEventTypeLink> _ecnDataPointTypeEventTypeLink;
 		
-		private EntitySet<ecnEventTypeEventTypeGroupLink> _ecnEventTypeEventTypeGroupLink;
+		private EntitySet<ecnDisplayCondition> _ecnDisplayCondition;
 		
 		private EntitySet<ecnDisplayConditionGroup> _ecnDisplayConditionGroup;
 		
-		private EntitySet<ecnDisplayCondition> _ecnDisplayCondition;
+		private EntitySet<ecnEventTypeEventTypeGroupLink> _ecnEventTypeEventTypeGroupLink;
 		
 		private EntitySet<ecnEventGroupValueCache> _ecnEventGroupValueCache;
 		
@@ -435,9 +446,9 @@ namespace viessmannAdr
 		public ecnEventType()
 		{
 			this._ecnDataPointTypeEventTypeLink = new EntitySet<ecnDataPointTypeEventTypeLink>(new Action<ecnDataPointTypeEventTypeLink>(this.attach_ecnDataPointTypeEventTypeLink), new Action<ecnDataPointTypeEventTypeLink>(this.detach_ecnDataPointTypeEventTypeLink));
-			this._ecnEventTypeEventTypeGroupLink = new EntitySet<ecnEventTypeEventTypeGroupLink>(new Action<ecnEventTypeEventTypeGroupLink>(this.attach_ecnEventTypeEventTypeGroupLink), new Action<ecnEventTypeEventTypeGroupLink>(this.detach_ecnEventTypeEventTypeGroupLink));
-			this._ecnDisplayConditionGroup = new EntitySet<ecnDisplayConditionGroup>(new Action<ecnDisplayConditionGroup>(this.attach_ecnDisplayConditionGroup), new Action<ecnDisplayConditionGroup>(this.detach_ecnDisplayConditionGroup));
 			this._ecnDisplayCondition = new EntitySet<ecnDisplayCondition>(new Action<ecnDisplayCondition>(this.attach_ecnDisplayCondition), new Action<ecnDisplayCondition>(this.detach_ecnDisplayCondition));
+			this._ecnDisplayConditionGroup = new EntitySet<ecnDisplayConditionGroup>(new Action<ecnDisplayConditionGroup>(this.attach_ecnDisplayConditionGroup), new Action<ecnDisplayConditionGroup>(this.detach_ecnDisplayConditionGroup));
+			this._ecnEventTypeEventTypeGroupLink = new EntitySet<ecnEventTypeEventTypeGroupLink>(new Action<ecnEventTypeEventTypeGroupLink>(this.attach_ecnEventTypeEventTypeGroupLink), new Action<ecnEventTypeEventTypeGroupLink>(this.detach_ecnEventTypeEventTypeGroupLink));
 			this._ecnEventGroupValueCache = new EntitySet<ecnEventGroupValueCache>(new Action<ecnEventGroupValueCache>(this.attach_ecnEventGroupValueCache), new Action<ecnEventGroupValueCache>(this.detach_ecnEventGroupValueCache));
 			OnCreated();
 		}
@@ -735,16 +746,16 @@ namespace viessmannAdr
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeEventTypeGroupLink", ThisKey="Id", OtherKey="EventTypeId")]
-		public EntitySet<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnDisplayCondition", Storage="_ecnDisplayCondition", ThisKey="Id", OtherKey="EventTypeIdCondition")]
+		public EntitySet<ecnDisplayCondition> ecnDisplayCondition
 		{
 			get
 			{
-				return this._ecnEventTypeEventTypeGroupLink;
+				return this._ecnDisplayCondition;
 			}
 			set
 			{
-				this._ecnEventTypeEventTypeGroupLink.Assign(value);
+				this._ecnDisplayCondition.Assign(value);
 			}
 		}
 		
@@ -761,16 +772,16 @@ namespace viessmannAdr
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnDisplayCondition", Storage="_ecnDisplayCondition", ThisKey="Id", OtherKey="EventTypeIdCondition")]
-		public EntitySet<ecnDisplayCondition> ecnDisplayCondition
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventType_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeEventTypeGroupLink", ThisKey="Id", OtherKey="EventTypeId")]
+		public EntitySet<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
 		{
 			get
 			{
-				return this._ecnDisplayCondition;
+				return this._ecnEventTypeEventTypeGroupLink;
 			}
 			set
 			{
-				this._ecnDisplayCondition.Assign(value);
+				this._ecnEventTypeEventTypeGroupLink.Assign(value);
 			}
 		}
 		
@@ -819,13 +830,13 @@ namespace viessmannAdr
 			entity.ecnEventType = null;
 		}
 		
-		private void attach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		private void attach_ecnDisplayCondition(ecnDisplayCondition entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventType = this;
 		}
 		
-		private void detach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		private void detach_ecnDisplayCondition(ecnDisplayCondition entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventType = null;
@@ -843,13 +854,13 @@ namespace viessmannAdr
 			entity.ecnEventType = null;
 		}
 		
-		private void attach_ecnDisplayCondition(ecnDisplayCondition entity)
+		private void attach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventType = this;
 		}
 		
-		private void detach_ecnDisplayCondition(ecnDisplayCondition entity)
+		private void detach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventType = null;
@@ -890,6 +901,8 @@ namespace viessmannAdr
 		
 		private EntitySet<ecnEventTypeGroup> _ecnEventTypeGroup;
 		
+		private EntitySet<ecnDataPoint> _ecnDataPoint;
+		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -912,6 +925,7 @@ namespace viessmannAdr
 		{
 			this._ecnDataPointTypeEventTypeLink = new EntitySet<ecnDataPointTypeEventTypeLink>(new Action<ecnDataPointTypeEventTypeLink>(this.attach_ecnDataPointTypeEventTypeLink), new Action<ecnDataPointTypeEventTypeLink>(this.detach_ecnDataPointTypeEventTypeLink));
 			this._ecnEventTypeGroup = new EntitySet<ecnEventTypeGroup>(new Action<ecnEventTypeGroup>(this.attach_ecnEventTypeGroup), new Action<ecnEventTypeGroup>(this.detach_ecnEventTypeGroup));
+			this._ecnDataPoint = new EntitySet<ecnDataPoint>(new Action<ecnDataPoint>(this.attach_ecnDataPoint), new Action<ecnDataPoint>(this.detach_ecnDataPoint));
 			OnCreated();
 		}
 		
@@ -1061,6 +1075,19 @@ namespace viessmannAdr
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDatapointType_ecnDataPoint", Storage="_ecnDataPoint", ThisKey="Id", OtherKey="DataPointTypeId")]
+		public EntitySet<ecnDataPoint> ecnDataPoint
+		{
+			get
+			{
+				return this._ecnDataPoint;
+			}
+			set
+			{
+				this._ecnDataPoint.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1100,6 +1127,18 @@ namespace viessmannAdr
 		}
 		
 		private void detach_ecnEventTypeGroup(ecnEventTypeGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDatapointType = null;
+		}
+		
+		private void attach_ecnDataPoint(ecnDataPoint entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDatapointType = this;
+		}
+		
+		private void detach_ecnDataPoint(ecnDataPoint entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnDatapointType = null;
@@ -1855,11 +1894,11 @@ namespace viessmannAdr
 		
 		private int _OrderIndex;
 		
-		private EntitySet<ecnEventTypeEventTypeGroupLink> _ecnEventTypeEventTypeGroupLink;
+		private EntitySet<ecnDisplayConditionGroup> _ecnDisplayConditionGroup;
 		
 		private EntitySet<ecnEventTypeGroup> _ecnEventTypeGroup2;
 		
-		private EntitySet<ecnDisplayConditionGroup> _ecnDisplayConditionGroup;
+		private EntitySet<ecnEventTypeEventTypeGroupLink> _ecnEventTypeEventTypeGroupLink;
 		
 		private EntityRef<ecnDatapointType> _ecnDatapointType;
 		
@@ -1895,9 +1934,9 @@ namespace viessmannAdr
 		
 		public ecnEventTypeGroup()
 		{
-			this._ecnEventTypeEventTypeGroupLink = new EntitySet<ecnEventTypeEventTypeGroupLink>(new Action<ecnEventTypeEventTypeGroupLink>(this.attach_ecnEventTypeEventTypeGroupLink), new Action<ecnEventTypeEventTypeGroupLink>(this.detach_ecnEventTypeEventTypeGroupLink));
-			this._ecnEventTypeGroup2 = new EntitySet<ecnEventTypeGroup>(new Action<ecnEventTypeGroup>(this.attach_ecnEventTypeGroup2), new Action<ecnEventTypeGroup>(this.detach_ecnEventTypeGroup2));
 			this._ecnDisplayConditionGroup = new EntitySet<ecnDisplayConditionGroup>(new Action<ecnDisplayConditionGroup>(this.attach_ecnDisplayConditionGroup), new Action<ecnDisplayConditionGroup>(this.detach_ecnDisplayConditionGroup));
+			this._ecnEventTypeGroup2 = new EntitySet<ecnEventTypeGroup>(new Action<ecnEventTypeGroup>(this.attach_ecnEventTypeGroup2), new Action<ecnEventTypeGroup>(this.detach_ecnEventTypeGroup2));
+			this._ecnEventTypeEventTypeGroupLink = new EntitySet<ecnEventTypeEventTypeGroupLink>(new Action<ecnEventTypeEventTypeGroupLink>(this.attach_ecnEventTypeEventTypeGroupLink), new Action<ecnEventTypeEventTypeGroupLink>(this.detach_ecnEventTypeEventTypeGroupLink));
 			this._ecnDatapointType = default(EntityRef<ecnDatapointType>);
 			this._ecnEventTypeGroup1 = default(EntityRef<ecnEventTypeGroup>);
 			OnCreated();
@@ -2131,16 +2170,16 @@ namespace viessmannAdr
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeEventTypeGroupLink", ThisKey="Id", OtherKey="EventTypeGroupId")]
-		public EntitySet<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnDisplayConditionGroup", Storage="_ecnDisplayConditionGroup", ThisKey="Id", OtherKey="EventTypeGroupIdDest")]
+		public EntitySet<ecnDisplayConditionGroup> ecnDisplayConditionGroup
 		{
 			get
 			{
-				return this._ecnEventTypeEventTypeGroupLink;
+				return this._ecnDisplayConditionGroup;
 			}
 			set
 			{
-				this._ecnEventTypeEventTypeGroupLink.Assign(value);
+				this._ecnDisplayConditionGroup.Assign(value);
 			}
 		}
 		
@@ -2157,16 +2196,16 @@ namespace viessmannAdr
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnDisplayConditionGroup", Storage="_ecnDisplayConditionGroup", ThisKey="Id", OtherKey="EventTypeGroupIdDest")]
-		public EntitySet<ecnDisplayConditionGroup> ecnDisplayConditionGroup
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnEventTypeGroup_ecnEventTypeEventTypeGroupLink", Storage="_ecnEventTypeEventTypeGroupLink", ThisKey="Id", OtherKey="EventTypeGroupId")]
+		public EntitySet<ecnEventTypeEventTypeGroupLink> ecnEventTypeEventTypeGroupLink
 		{
 			get
 			{
-				return this._ecnDisplayConditionGroup;
+				return this._ecnEventTypeEventTypeGroupLink;
 			}
 			set
 			{
-				this._ecnDisplayConditionGroup.Assign(value);
+				this._ecnEventTypeEventTypeGroupLink.Assign(value);
 			}
 		}
 		
@@ -2258,13 +2297,13 @@ namespace viessmannAdr
 			}
 		}
 		
-		private void attach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		private void attach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventTypeGroup = this;
 		}
 		
-		private void detach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
+		private void detach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventTypeGroup = null;
@@ -2282,13 +2321,13 @@ namespace viessmannAdr
 			entity.ecnEventTypeGroup1 = null;
 		}
 		
-		private void attach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
+		private void attach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventTypeGroup = this;
 		}
 		
-		private void detach_ecnDisplayConditionGroup(ecnDisplayConditionGroup entity)
+		private void detach_ecnEventTypeEventTypeGroupLink(ecnEventTypeEventTypeGroupLink entity)
 		{
 			this.SendPropertyChanging();
 			entity.ecnEventTypeGroup = null;
@@ -2987,6 +3026,8 @@ namespace viessmannAdr
 		
 		private EntityRef<ecnDisplayCondition> _ecnDisplayCondition;
 		
+		private EntityRef<ecnDataPoint> _ecnDataPoint;
+		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -3032,6 +3073,7 @@ namespace viessmannAdr
 			this._ecnEventValueType = default(EntityRef<ecnEventValueType>);
 			this._ecnEventType = default(EntityRef<ecnEventType>);
 			this._ecnDisplayCondition = default(EntityRef<ecnDisplayCondition>);
+			this._ecnDataPoint = default(EntityRef<ecnDataPoint>);
 			OnCreated();
 		}
 		
@@ -3046,7 +3088,7 @@ namespace viessmannAdr
 			{
 				if ((this._CompanyId != value))
 				{
-					if (this._ecnEventValueType.HasLoadedOrAssignedValue)
+					if ((this._ecnEventValueType.HasLoadedOrAssignedValue || this._ecnDataPoint.HasLoadedOrAssignedValue))
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -3090,6 +3132,10 @@ namespace viessmannAdr
 			{
 				if ((this._DataPointId != value))
 				{
+					if (this._ecnDataPoint.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnDataPointIdChanging(value);
 					this.SendPropertyChanging();
 					this._DataPointId = value;
@@ -3493,6 +3539,42 @@ namespace viessmannAdr
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDataPoint_ecnEventGroupValueCache", Storage="_ecnDataPoint", ThisKey="DataPointId,CompanyId", OtherKey="Id,CompanyId", IsForeignKey=true)]
+		public ecnDataPoint ecnDataPoint
+		{
+			get
+			{
+				return this._ecnDataPoint.Entity;
+			}
+			set
+			{
+				ecnDataPoint previousValue = this._ecnDataPoint.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnDataPoint.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnDataPoint.Entity = null;
+						previousValue.ecnEventGroupValueCache.Remove(this);
+					}
+					this._ecnDataPoint.Entity = value;
+					if ((value != null))
+					{
+						value.ecnEventGroupValueCache.Add(this);
+						this._DataPointId = value.Id;
+						this._CompanyId = value.CompanyId;
+					}
+					else
+					{
+						this._DataPointId = default(int);
+						this._CompanyId = default(byte);
+					}
+					this.SendPropertyChanged("ecnDataPoint");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3511,6 +3593,353 @@ namespace viessmannAdr
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ecnDataPoint")]
+	public partial class ecnDataPoint : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private byte _CompanyId;
+		
+		private string _Name;
+		
+		private int _DataPointTypeId;
+		
+		private int _DeviceId;
+		
+		private string _Address;
+		
+		private string _Description;
+		
+		private string _InformationDataSetXML;
+		
+		private int _StatusEventTypeId;
+		
+		private bool _Deleted;
+		
+		private EntitySet<ecnEventGroupValueCache> _ecnEventGroupValueCache;
+		
+		private EntityRef<ecnDatapointType> _ecnDatapointType;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(byte value);
+    partial void OnCompanyIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDataPointTypeIdChanging(int value);
+    partial void OnDataPointTypeIdChanged();
+    partial void OnDeviceIdChanging(int value);
+    partial void OnDeviceIdChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnInformationDataSetXMLChanging(string value);
+    partial void OnInformationDataSetXMLChanged();
+    partial void OnStatusEventTypeIdChanging(int value);
+    partial void OnStatusEventTypeIdChanged();
+    partial void OnDeletedChanging(bool value);
+    partial void OnDeletedChanged();
+    #endregion
+		
+		public ecnDataPoint()
+		{
+			this._ecnEventGroupValueCache = new EntitySet<ecnEventGroupValueCache>(new Action<ecnEventGroupValueCache>(this.attach_ecnEventGroupValueCache), new Action<ecnEventGroupValueCache>(this.detach_ecnEventGroupValueCache));
+			this._ecnDatapointType = default(EntityRef<ecnDatapointType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="TinyInt NOT NULL", IsPrimaryKey=true)]
+		public byte CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(255)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataPointTypeId", DbType="Int NOT NULL")]
+		public int DataPointTypeId
+		{
+			get
+			{
+				return this._DataPointTypeId;
+			}
+			set
+			{
+				if ((this._DataPointTypeId != value))
+				{
+					if (this._ecnDatapointType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDataPointTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._DataPointTypeId = value;
+					this.SendPropertyChanged("DataPointTypeId");
+					this.OnDataPointTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeviceId", DbType="Int NOT NULL")]
+		public int DeviceId
+		{
+			get
+			{
+				return this._DeviceId;
+			}
+			set
+			{
+				if ((this._DeviceId != value))
+				{
+					this.OnDeviceIdChanging(value);
+					this.SendPropertyChanging();
+					this._DeviceId = value;
+					this.SendPropertyChanged("DeviceId");
+					this.OnDeviceIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(255)")]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(255)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InformationDataSetXML", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string InformationDataSetXML
+		{
+			get
+			{
+				return this._InformationDataSetXML;
+			}
+			set
+			{
+				if ((this._InformationDataSetXML != value))
+				{
+					this.OnInformationDataSetXMLChanging(value);
+					this.SendPropertyChanging();
+					this._InformationDataSetXML = value;
+					this.SendPropertyChanged("InformationDataSetXML");
+					this.OnInformationDataSetXMLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusEventTypeId", DbType="Int NOT NULL")]
+		public int StatusEventTypeId
+		{
+			get
+			{
+				return this._StatusEventTypeId;
+			}
+			set
+			{
+				if ((this._StatusEventTypeId != value))
+				{
+					this.OnStatusEventTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._StatusEventTypeId = value;
+					this.SendPropertyChanged("StatusEventTypeId");
+					this.OnStatusEventTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Deleted", DbType="Bit NOT NULL")]
+		public bool Deleted
+		{
+			get
+			{
+				return this._Deleted;
+			}
+			set
+			{
+				if ((this._Deleted != value))
+				{
+					this.OnDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._Deleted = value;
+					this.SendPropertyChanged("Deleted");
+					this.OnDeletedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDataPoint_ecnEventGroupValueCache", Storage="_ecnEventGroupValueCache", ThisKey="Id,CompanyId", OtherKey="DataPointId,CompanyId")]
+		public EntitySet<ecnEventGroupValueCache> ecnEventGroupValueCache
+		{
+			get
+			{
+				return this._ecnEventGroupValueCache;
+			}
+			set
+			{
+				this._ecnEventGroupValueCache.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ecnDatapointType_ecnDataPoint", Storage="_ecnDatapointType", ThisKey="DataPointTypeId", OtherKey="Id", IsForeignKey=true)]
+		public ecnDatapointType ecnDatapointType
+		{
+			get
+			{
+				return this._ecnDatapointType.Entity;
+			}
+			set
+			{
+				ecnDatapointType previousValue = this._ecnDatapointType.Entity;
+				if (((previousValue != value) 
+							|| (this._ecnDatapointType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ecnDatapointType.Entity = null;
+						previousValue.ecnDataPoint.Remove(this);
+					}
+					this._ecnDatapointType.Entity = value;
+					if ((value != null))
+					{
+						value.ecnDataPoint.Add(this);
+						this._DataPointTypeId = value.Id;
+					}
+					else
+					{
+						this._DataPointTypeId = default(int);
+					}
+					this.SendPropertyChanged("ecnDatapointType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDataPoint = this;
+		}
+		
+		private void detach_ecnEventGroupValueCache(ecnEventGroupValueCache entity)
+		{
+			this.SendPropertyChanging();
+			entity.ecnDataPoint = null;
 		}
 	}
 }

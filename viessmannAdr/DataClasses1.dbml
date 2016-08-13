@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ecnViessmann" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=TIEFWASSER\ECNEXPRESS2008;Initial Catalog=ecnViessmann;Integrated Security=True" SettingsObjectName="viessmannAdr.Properties.Settings" SettingsPropertyName="ecnViessmannConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=TIEFWASSER\ECNEXPRESS2008;Initial Catalog=ecnViessmann;Integrated Security=True" SettingsObjectName="viessmannAdr.Properties.Settings" SettingsPropertyName="ecnViessmannConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.ecnDataPointTypeEventTypeLink" Member="ecnDataPointTypeEventTypeLink">
     <Type Name="ecnDataPointTypeEventTypeLink">
       <Column Name="CompanyId" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -26,9 +26,9 @@
       <Column Name="DefaultValue" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
       <Column Name="ObjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="ecnEventType_ecnDataPointTypeEventTypeLink" Member="ecnDataPointTypeEventTypeLink" ThisKey="Id" OtherKey="EventTypeId" Type="ecnDataPointTypeEventTypeLink" />
-      <Association Name="ecnEventType_ecnEventTypeEventTypeGroupLink" Member="ecnEventTypeEventTypeGroupLink" ThisKey="Id" OtherKey="EventTypeId" Type="ecnEventTypeEventTypeGroupLink" />
-      <Association Name="ecnEventType_ecnDisplayConditionGroup" Member="ecnDisplayConditionGroup" ThisKey="Id" OtherKey="EventTypeIdDest" Type="ecnDisplayConditionGroup" />
       <Association Name="ecnEventType_ecnDisplayCondition" Member="ecnDisplayCondition" ThisKey="Id" OtherKey="EventTypeIdCondition" Type="ecnDisplayCondition" />
+      <Association Name="ecnEventType_ecnDisplayConditionGroup" Member="ecnDisplayConditionGroup" ThisKey="Id" OtherKey="EventTypeIdDest" Type="ecnDisplayConditionGroup" />
+      <Association Name="ecnEventType_ecnEventTypeEventTypeGroupLink" Member="ecnEventTypeEventTypeGroupLink" ThisKey="Id" OtherKey="EventTypeId" Type="ecnEventTypeEventTypeGroupLink" />
       <Association Name="ecnEventType_ecnEventGroupValueCache" Member="ecnEventGroupValueCache" ThisKey="Id" OtherKey="EventTypeId" Type="ecnEventGroupValueCache" />
     </Type>
   </Table>
@@ -42,6 +42,7 @@
       <Column Name="Address" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
       <Association Name="ecnDatapointType_ecnDataPointTypeEventTypeLink" Member="ecnDataPointTypeEventTypeLink" ThisKey="Id" OtherKey="DataPointTypeId" Type="ecnDataPointTypeEventTypeLink" />
       <Association Name="ecnDatapointType_ecnEventTypeGroup" Member="ecnEventTypeGroup" ThisKey="Id" OtherKey="DataPointTypeId" Type="ecnEventTypeGroup" />
+      <Association Name="ecnDatapointType_ecnDataPoint" Member="ecnDataPoint" ThisKey="Id" OtherKey="DataPointTypeId" Type="ecnDataPoint" />
     </Type>
   </Table>
   <Table Name="dbo.ecnDisplayCondition" Member="ecnDisplayCondition">
@@ -88,9 +89,9 @@
       <Column Name="DeviceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="DataPointTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="OrderIndex" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="ecnEventTypeGroup_ecnEventTypeEventTypeGroupLink" Member="ecnEventTypeEventTypeGroupLink" ThisKey="Id" OtherKey="EventTypeGroupId" Type="ecnEventTypeEventTypeGroupLink" />
-      <Association Name="ecnEventTypeGroup_ecnEventTypeGroup" Member="ecnEventTypeGroup2" ThisKey="Id" OtherKey="ParentId" Type="ecnEventTypeGroup" />
       <Association Name="ecnEventTypeGroup_ecnDisplayConditionGroup" Member="ecnDisplayConditionGroup" ThisKey="Id" OtherKey="EventTypeGroupIdDest" Type="ecnDisplayConditionGroup" />
+      <Association Name="ecnEventTypeGroup_ecnEventTypeGroup" Member="ecnEventTypeGroup2" ThisKey="Id" OtherKey="ParentId" Type="ecnEventTypeGroup" />
+      <Association Name="ecnEventTypeGroup_ecnEventTypeEventTypeGroupLink" Member="ecnEventTypeEventTypeGroupLink" ThisKey="Id" OtherKey="EventTypeGroupId" Type="ecnEventTypeEventTypeGroupLink" />
       <Association Name="ecnDatapointType_ecnEventTypeGroup" Member="ecnDatapointType" ThisKey="DataPointTypeId" OtherKey="Id" Type="ecnDatapointType" IsForeignKey="true" />
       <Association Name="ecnEventTypeGroup_ecnEventTypeGroup" Member="ecnEventTypeGroup1" ThisKey="ParentId" OtherKey="Id" Type="ecnEventTypeGroup" IsForeignKey="true" />
     </Type>
@@ -147,6 +148,23 @@
       <Association Name="ecnEventValueType_ecnEventGroupValueCache" Member="ecnEventValueType" ThisKey="EventValueTypeId,CompanyId" OtherKey="Id,CompanyId" Type="ecnEventValueType" IsForeignKey="true" />
       <Association Name="ecnEventType_ecnEventGroupValueCache" Member="ecnEventType" ThisKey="EventTypeId" OtherKey="Id" Type="ecnEventType" IsForeignKey="true" />
       <Association Name="ecnDisplayCondition_ecnEventGroupValueCache" Member="ecnDisplayCondition" ThisKey="EventTypeId,EventValueTypeId" OtherKey="EventTypeIdCondition,EventTypeValueCondition" Type="ecnDisplayCondition" IsForeignKey="true" />
+      <Association Name="ecnDataPoint_ecnEventGroupValueCache" Member="ecnDataPoint" ThisKey="DataPointId,CompanyId" OtherKey="Id,CompanyId" Type="ecnDataPoint" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ecnDataPoint" Member="ecnDataPoint">
+    <Type Name="ecnDataPoint">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DataPointTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DeviceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="InformationDataSetXML" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="StatusEventTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Deleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ecnDataPoint_ecnEventGroupValueCache" Member="ecnEventGroupValueCache" ThisKey="Id,CompanyId" OtherKey="DataPointId,CompanyId" Type="ecnEventGroupValueCache" />
+      <Association Name="ecnDatapointType_ecnDataPoint" Member="ecnDatapointType" ThisKey="DataPointTypeId" OtherKey="Id" Type="ecnDatapointType" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

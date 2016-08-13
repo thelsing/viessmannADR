@@ -17,25 +17,53 @@ namespace viessmannAdr
         static Dictionary<string, string> textValues = new Dictionary<string, string>();
         static List<string> addessesForFile = new List<string>();
         static DataClasses1DataContext dc = new DataClasses1DataContext();
+        static Properties.Settings config = Properties.Settings.Default;
+        static ecnDataPoint device;
+
         static void Main(string[] args)
         {
             initTextValues();
+            chooseDevice();
 
-            var query = from g in dc.ecnEventTypeGroup
-                        where g.DataPointTypeId == 350
-                        && g.ParentId == -1
-                        && (g.ecnEventTypeGroup2.Any() || g.ecnEventTypeEventTypeGroupLink.Any())
-                        select g;
-
-            //fetchAdrFromStatistics();
-            foreach (var g in query)
+            foreach (var g in selectGroups())
             {
                 fetchAdrFromEventGroup(g.Id);
                 //fetchAdrFromEventGroup(0);
                 generateVitoXML(g);
                 addessesForFile.Clear();
             }
+            Console.WriteLine("All Done. Press any key to close.");
             Console.ReadKey();
+        }
+
+        private static void chooseDevice()
+        {
+            var devQuery = from d in dc.ecnDataPoint
+                           where d.Id != 1
+                           select d;
+            var devList = devQuery.ToList();
+            int idx = 0;
+            if (devList.Count() > 1)
+            {
+                Console.WriteLine("Choose device:");
+                foreach (var d in devList)
+                {
+                    Console.WriteLine(devList.IndexOf(d) + " " + d.Name);
+                }
+                var choice = Console.ReadLine();
+                idx = int.Parse(choice);
+            }
+            device = devList[idx];
+        }
+
+        private static IQueryable<ecnEventTypeGroup> selectGroups()
+        {
+            var query = from g in dc.ecnEventTypeGroup
+                        where g.DataPointTypeId == device.DataPointTypeId
+                        && g.ParentId == -1
+                        && (g.ecnEventTypeGroup2.Any() || g.ecnEventTypeEventTypeGroupLink.Any())
+                        select g;
+            return query;
         }
 
         private static void addIfNotThere(ecnEventType evt)
@@ -71,11 +99,21 @@ namespace viessmannAdr
 
         private static void initTextValues()
         {
-            XmlSerializer trSerializer = new XmlSerializer(typeof(TextResources));
+            XmlSerializer trSerializer = new XmlSerializer(typeof(DocumentElement));
 
-            TextResources tr = (TextResources)trSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\Web\XmlDocuments\Textresource_de_tk.xml"));
-            foreach (var item in tr.Items)
-                textValues[item.Label] = item.Value;
+            DocumentElement de = (DocumentElement)trSerializer.Deserialize(
+                new XmlTextReader(Path.Combine(config.TextRessourcePath, "Textresource_" + config.OutputLang + ".xml")));
+            foreach (var o in de.Items)
+            {
+                var trs = o as DocumentElementTextResources;
+                if (trs == null)
+                    continue;
+
+                foreach (var item in trs.TextResource)
+                    textValues[item.Label] = item.Value;
+
+                break;
+            }
         }
 
         static string trans(string para)
@@ -134,7 +172,7 @@ namespace viessmannAdr
                 bool cond = false;
                 foreach (var co in c.ecnDisplayCondition)
                 {
-                    cond = co.ecnEventGroupValueCache.Any() && co.EqualCondition;
+                    cond = co.ecnEventGroupValueCache.Where(cv=> cv.DataPointId == device.Id).Any() && co.EqualCondition;
                     if (!co.EqualCondition)
                         cond = !cond;
 
@@ -172,27 +210,27 @@ namespace viessmannAdr
         {
 
             Dictionary<string, EventTypesEventType> evTypes = new Dictionary<string, EventTypesEventType>();
-            Dictionary<string, string> textValues = new Dictionary<string, string>();
 
             XmlSerializer evSerializer = new XmlSerializer(typeof(EventTypes));
-            XmlSerializer trSerializer = new XmlSerializer(typeof(TextResources));
 
             var evDict = new Dictionary<string, string>();
             var dc = new DataClasses1DataContext();
             var query = from t in dc.ecnDataPointTypeEventTypeLink
-                            //where t.DataPointTypeId == 350
                         select new { t.ecnEventType.Address, t.ecnEventType.Name };
             foreach (var item in query)
                 evDict[item.Address] = trans(item.Name);
 
             var allEvTypes = new Dictionary<string, EventTypesEventType>();
-            EventTypes types = (EventTypes)evSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\Config\ecnEventType.xml"));
+            EventTypes types = (EventTypes)evSerializer.Deserialize(
+                new XmlTextReader(Path.Combine(config.EventTypePath, "ecnEventType.xml")));
             foreach (var item in types.Items)
                 allEvTypes[item.ID] = item;
-            types = (EventTypes)evSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\Config\sysDeviceIdent.xml"));
+            types = (EventTypes)evSerializer.Deserialize(
+                new XmlTextReader(Path.Combine(config.EventTypePath, "sysDeviceIdent.xml")));
             foreach (var item in types.Items)
                 allEvTypes[item.ID] = item;
-            types = (EventTypes)evSerializer.Deserialize(new XmlTextReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\Config\sysDeviceIdentExt.xml"));
+            types = (EventTypes)evSerializer.Deserialize(
+                new XmlTextReader(Path.Combine(config.EventTypePath, "sysDeviceIdentExt.xml")));
             foreach (var item in types.Items)
                 allEvTypes[item.ID] = item;
 
@@ -203,12 +241,6 @@ namespace viessmannAdr
                 var t = allEvTypes[a];
                 if (!evDict.ContainsKey(t.ID) && !(t.Name != null && t.Name.StartsWith("sys")) || string.IsNullOrEmpty(t.Address))
                     continue;
-
-                if (!addessesForFile.Contains(t.ID))
-                    continue;
-
-                //if (t.BitLength == "0")
-                //    continue;
 
                 wantedEvTypes.Add(t);
                 if (evDict.ContainsKey(t.ID))
@@ -246,14 +278,14 @@ namespace viessmannAdr
             //foreach(var conv in wantedEvTypes.Select(ev => ev.Conversion).Distinct())
             //    Console.WriteLine(conv);
 
-            Console.WriteLine("found " + count + "items");
+            Console.WriteLine("found " + count + " datapoints");
             EventTypes toWriteOut = new EventTypes();
             toWriteOut.Items = wantedEvTypes.OrderBy(t => t.Address).ToArray();
 
 
-            TextWriter writer = new StreamWriter("eventTypes.xml");
-            evSerializer.Serialize(writer, toWriteOut);
-            writer.Close();
+            //TextWriter writer = new StreamWriter("eventTypes.xml");
+            //evSerializer.Serialize(writer, toWriteOut);
+            //writer.Close();
 
             XElement commands = new XElement("commands");
             foreach (var i in toWriteOut.Items)
@@ -261,21 +293,41 @@ namespace viessmannAdr
                 
                var cmd =  new XElement("command", new XAttribute("name", "get_" + i.ID),
                              new XAttribute("protocmd", "getaddr"),
-                        new XElement("shortDescription", i.Name),
                         new XElement("addr", i.Address.Substring(2)),
-                        new XElement("blockLength", i.BlockLength),
-                        new XElement("byteLength", i.ByteLength),
-                        new XElement("bytePosition", i.BytePosition),
-                        new XElement("bitPosition", i.BitPosition),
-                        new XElement("bitLength", i.BitLength),
-                        new XElement("description", i.Description),
                         new XElement("parameter", i.Parameter),
-                        new XElement("conversion", i.Conversion),
-                        new XElement("conversionFactor", i.ConversionFactor),
-                        new XElement("conversionOffset", i.ConversionOffset)
+                        new XElement("conversion", i.Conversion)
                     );
-                //if (i.ValueList != null)
-                //    cmd.Add(new XElement("valueList", i.ValueList));
+
+                if (i.ValueList != null)
+                    cmd.Add(new XElement("valueList", i.ValueList));
+
+                if (i.ConversionFactor != null)
+                    cmd.Add(new XElement("conversionFactor", i.ConversionFactor));
+
+                if (i.ConversionOffset != null)
+                    cmd.Add(new XElement("conversionOffset", i.ConversionOffset));
+
+                if (i.Description != null)
+                    cmd.Add(new XElement("description", i.Description));
+
+                if (i.BitLength != null)
+                    cmd.Add(new XElement("bitLength", i.BitLength));
+
+                if (i.BitPosition != null)
+                    cmd.Add(new XElement("bitPosition", i.BitPosition));
+
+                if (i.Name != null)
+                    cmd.Add(new XElement("shortDescription", i.Name));
+
+                if (i.BytePosition != null)
+                    cmd.Add(new XElement("bytePosition", i.BytePosition));
+
+                if (i.BlockLength != null)
+                    cmd.Add(new XElement("blockLength", i.BlockLength));
+
+                if (i.ByteLength != null)
+                    cmd.Add(new XElement("byteLength", i.ByteLength));
+
                 commands.Add(cmd);
             }
 
@@ -287,30 +339,11 @@ namespace viessmannAdr
                 ),
                 commands);
 
-            TextWriter writer2 = new StreamWriter(trans(g.Name) + "_vito.xml");
+            var fileName = trans(g.Name) + "_vito.xml";
+            TextWriter writer2 = new StreamWriter(fileName);
             writer2.Write(vito);
             writer2.Close();
-
-
-
-            Console.WriteLine("Fertig");
-            Thread.Sleep(1000);
-        }
-
-        private static void fetchAdrFromStatistics()
-        {
-            var reader = new StreamReader(@"C:\Program Files\Viessmann Vitosoft 300 SID1\ServiceTool\MobileClient\log\statistic.log");
-            string line = reader.ReadLine();
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (!line.Contains(";"))
-                    continue;
-                var parts = line.Split(';');
-                if (parts.Length != 8)
-                    continue;
-                var part = parts[5];
-                addessesForFile.Add(part);
-            }
+            Console.WriteLine("Written to " + fileName + "\n");
         }
     }
 }

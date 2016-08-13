@@ -25,12 +25,50 @@ namespace viessmannAdr.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Viessmann Vitosoft 300 SID1\\ServiceTool\\Web\\XmlDocuments")]
+        public string TextRessourcePath {
+            get {
+                return ((string)(this["TextRessourcePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=TIEFWASSER\\ECNEXPRESS2008;Initial Catalog=ecnViessmann;Integrated Sec" +
-            "urity=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=localhost\\ECNEXPRESS2008;Initial Catalog=ecnViessmann;Integrated Secu" +
+            "rity=True")]
         public string ecnViessmannConnectionString {
             get {
                 return ((string)(this["ecnViessmannConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("de")]
+        public string OutputLang {
+            get {
+                return ((string)(this["OutputLang"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\Viessmann Vitosoft 300 SID1\\ServiceTool\\MobileClient\\Config")]
+        public string EventTypePath {
+            get {
+                return ((string)(this["EventTypePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=TIEFWASSER\\ECNEXPRESS2008;Initial Catalog=ecnViessmann;Integrated Sec" +
+            "urity=True")]
+        public string ecnViessmannConnectionString1 {
+            get {
+                return ((string)(this["ecnViessmannConnectionString1"]));
             }
         }
     }
