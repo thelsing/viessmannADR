@@ -1,0 +1,1023 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ecnViessmannModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ecnDataPoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="DataPointTypeId" Type="int" Nullable="false" />
+          <Property Name="DeviceId" Type="int" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="InformationDataSetXML" Type="text" />
+          <Property Name="StatusEventTypeId" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnDatapointType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="StatusEventTypeId" Type="int" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="ecnDataPointTypeEventTypeLink">
+          <Key>
+            <PropertyRef Name="DataPointTypeId" />
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          <Property Name="DataPointTypeId" Type="int" Nullable="false" />
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnDisplayCondition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ConditionGroupId" Type="int" Nullable="false" />
+          <Property Name="EventTypeIdCondition" Type="int" Nullable="false" />
+          <Property Name="EventTypeValueCondition" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Condition" Type="int" Nullable="false" />
+          <Property Name="ConditionValue" Type="float" />
+        </EntityType>
+        <EntityType Name="ecnDisplayConditionGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Type" Type="tinyint" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="EventTypeIdDest" Type="int" Nullable="false" />
+          <Property Name="EventTypeGroupIdDest" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnEventGroupValueCache">
+          <Key>
+            
+            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="DataPointId" />
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          
+          <Property Name="DeviceId" Type="int" Nullable="false" />
+          <Property Name="DataPointId" Type="int" Nullable="false" />
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+          <Property Name="EventValueTypeId" Type="int" Nullable="false" />
+          <Property Name="ValueState" Type="tinyint" Nullable="false" />
+          <Property Name="StatusTypeId" Type="int" />
+          <Property Name="ValueType" Type="int" />
+          <Property Name="Value_Bit" Type="bit" />
+          <Property Name="Value_Int" Type="int" />
+          <Property Name="Value_Float" Type="float" />
+          <Property Name="Value_Ntext" Type="nvarchar(max)" />
+          <Property Name="Value_VarChar" Type="nvarchar(max)" />
+          <Property Name="Value_DateTime" Type="datetime" />
+          <Property Name="Value_Binary" Type="varbinary" MaxLength="8000" />
+          <Property Name="ValueUnit" Type="nvarchar" MaxLength="255" />
+          <Property Name="ValueEventTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnEventType">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          
+          <Property Name="EnumType" Type="bit" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+          <Property Name="Conversion" Type="varchar" MaxLength="255" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="Filtercriterion" Type="bit" Nullable="false" />
+          <Property Name="Reportingcriterion" Type="bit" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="255" />
+          <Property Name="DefaultValue" Type="varchar" MaxLength="1024" />
+          <Property Name="ObjectId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnEventTypeEventTypeGroupLink">
+          <Key>
+            
+            <PropertyRef Name="EventTypeId" />
+            <PropertyRef Name="EventTypeGroupId" />
+          </Key>
+          
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+          <Property Name="EventTypeGroupId" Type="int" Nullable="false" />
+          <Property Name="EventTypeOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnEventTypeEventValueTypeLink">
+          <Key>
+            
+            <PropertyRef Name="EventTypeId" />
+            <PropertyRef Name="EventValueId" />
+          </Key>
+          
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+          <Property Name="EventValueId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnEventTypeGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ObjectGroupId" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="EntrancePoint" Type="bit" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="DeviceTypeId" Type="int" Nullable="false" />
+          <Property Name="DataPointTypeId" Type="int" Nullable="false" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ecnEventValueType">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="EnumAddressValue" Type="int" />
+          <Property Name="EnumReplaceValue" Type="varchar" MaxLength="255" />
+          <Property Name="StatusTypeId" Type="int" Nullable="false" />
+          <Property Name="Unit" Type="varchar" MaxLength="255" />
+          <Property Name="DataType" Type="varchar" MaxLength="255" />
+          <Property Name="Stepping" Type="float" />
+          <Property Name="ValuePrecision" Type="int" />
+          <Property Name="LowerBorder" Type="float" />
+          <Property Name="UpperBorder" Type="float" />
+          <Property Name="Length" Type="int" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ecnStatusType">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShowInEventTray" Type="bit" Nullable="false" />
+          <Property Name="Image" Type="image" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vsmDatapointTypeGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="OrderIndex" Type="int" Nullable="false" />
+          <Property Name="OfflineConfigEnabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vsmDatapointTypeGroupDatapointTypeLink">
+          <Key>
+            
+            <PropertyRef Name="DatapointTypeGroupId" />
+            <PropertyRef Name="DatapointTypeId" />
+          </Key>
+          
+          <Property Name="DatapointTypeGroupId" Type="int" Nullable="false" />
+          <Property Name="DatapointTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ecnEventGroupValueCache_ecnDataPoint">
+          <End Role="ecnDataPoint" Type="Self.ecnDataPoint" Multiplicity="1" />
+          <End Role="ecnEventGroupValueCache" Type="Self.ecnEventGroupValueCache" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnDataPoint">
+              <PropertyRef Name="Id" />
+              
+            </Principal>
+            <Dependent Role="ecnEventGroupValueCache">
+              <PropertyRef Name="DataPointId" />
+              
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ecnEventGroupValueCache_ecnEventValueType">
+          <End Role="ecnEventValueType" Type="Self.ecnEventValueType" Multiplicity="1" />
+          <End Role="ecnEventGroupValueCache" Type="Self.ecnEventGroupValueCache" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnEventValueType">
+              <PropertyRef Name="Id" />
+              
+            </Principal>
+            <Dependent Role="ecnEventGroupValueCache">
+              <PropertyRef Name="EventValueTypeId" />
+              
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ecnEventGroupValueCache_ecnStatusType">
+          <End Role="ecnStatusType" Type="Self.ecnStatusType" Multiplicity="0..1" />
+          <End Role="ecnEventGroupValueCache" Type="Self.ecnEventGroupValueCache" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnStatusType">
+              <PropertyRef Name="Id" />
+              
+            </Principal>
+            <Dependent Role="ecnEventGroupValueCache">
+              <PropertyRef Name="StatusTypeId" />
+              
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vsmDatapointTypeGroupDatapointTypeLink_ecnDatapointType">
+          <End Role="ecnDatapointType" Type="Self.ecnDatapointType" Multiplicity="1" />
+          <End Role="vsmDatapointTypeGroupDatapointTypeLink" Type="Self.vsmDatapointTypeGroupDatapointTypeLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnDatapointType">
+              <PropertyRef Name="Id" />
+              
+            </Principal>
+            <Dependent Role="vsmDatapointTypeGroupDatapointTypeLink">
+              <PropertyRef Name="DatapointTypeId" />
+              
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_vsmDatapointTypeGroupDatapointTypeLink_vsmDatapointTypeGroup">
+          <End Role="vsmDatapointTypeGroup" Type="Self.vsmDatapointTypeGroup" Multiplicity="1" />
+          <End Role="vsmDatapointTypeGroupDatapointTypeLink" Type="Self.vsmDatapointTypeGroupDatapointTypeLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vsmDatapointTypeGroup">
+              <PropertyRef Name="Id" />
+              
+            </Principal>
+            <Dependent Role="vsmDatapointTypeGroupDatapointTypeLink">
+              <PropertyRef Name="DatapointTypeGroupId" />
+              
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ecnViessmannModelStoreContainer">
+          <EntitySet Name="ecnDataPoint" EntityType="Self.ecnDataPoint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnDatapointType" EntityType="Self.ecnDatapointType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnDataPointTypeEventTypeLink" EntityType="Self.ecnDataPointTypeEventTypeLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnDisplayCondition" EntityType="Self.ecnDisplayCondition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnDisplayConditionGroup" EntityType="Self.ecnDisplayConditionGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnEventGroupValueCache" EntityType="Self.ecnEventGroupValueCache" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnEventType" EntityType="Self.ecnEventType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnEventTypeEventTypeGroupLink" EntityType="Self.ecnEventTypeEventTypeGroupLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnEventTypeEventValueTypeLink" EntityType="Self.ecnEventTypeEventValueTypeLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnEventTypeGroup" EntityType="Self.ecnEventTypeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnEventValueType" EntityType="Self.ecnEventValueType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ecnStatusType" EntityType="Self.ecnStatusType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vsmDatapointTypeGroup" EntityType="Self.vsmDatapointTypeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vsmDatapointTypeGroupDatapointTypeLink" EntityType="Self.vsmDatapointTypeGroupDatapointTypeLink" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ecnEventGroupValueCache_ecnDataPoint" Association="Self.FK_ecnEventGroupValueCache_ecnDataPoint">
+            <End Role="ecnDataPoint" EntitySet="ecnDataPoint" />
+            <End Role="ecnEventGroupValueCache" EntitySet="ecnEventGroupValueCache" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ecnEventGroupValueCache_ecnEventValueType" Association="Self.FK_ecnEventGroupValueCache_ecnEventValueType">
+            <End Role="ecnEventValueType" EntitySet="ecnEventValueType" />
+            <End Role="ecnEventGroupValueCache" EntitySet="ecnEventGroupValueCache" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ecnEventGroupValueCache_ecnStatusType" Association="Self.FK_ecnEventGroupValueCache_ecnStatusType">
+            <End Role="ecnStatusType" EntitySet="ecnStatusType" />
+            <End Role="ecnEventGroupValueCache" EntitySet="ecnEventGroupValueCache" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vsmDatapointTypeGroupDatapointTypeLink_ecnDatapointType" Association="Self.FK_vsmDatapointTypeGroupDatapointTypeLink_ecnDatapointType">
+            <End Role="ecnDatapointType" EntitySet="ecnDatapointType" />
+            <End Role="vsmDatapointTypeGroupDatapointTypeLink" EntitySet="vsmDatapointTypeGroupDatapointTypeLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_vsmDatapointTypeGroupDatapointTypeLink_vsmDatapointTypeGroup" Association="Self.FK_vsmDatapointTypeGroupDatapointTypeLink_vsmDatapointTypeGroup">
+            <End Role="vsmDatapointTypeGroup" EntitySet="vsmDatapointTypeGroup" />
+            <End Role="vsmDatapointTypeGroupDatapointTypeLink" EntitySet="vsmDatapointTypeGroupDatapointTypeLink" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ViessmannModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DataPoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DataPointTypeId" Type="Int32" Nullable="false" />
+          <Property Name="DeviceId" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InformationDataSetXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StatusEventTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ecnEventGroupValueCache" Relationship="ViessmannModel.FK_ecnEventGroupValueCache_ecnDataPoint" FromRole="ecnDataPoint" ToRole="ecnEventGroupValueCache" />
+          <NavigationProperty Name="DatapointType" Relationship="ViessmannModel.DataPointDatapointType" FromRole="DataPoint" ToRole="DatapointType" />
+        </EntityType>
+        <EntityType Name="DatapointTypeGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <Property Name="OfflineConfigEnabled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DatapointTypes" Relationship="ViessmannModel.vsmDatapointTypeGroupecnDatapointType" FromRole="vsmDatapointTypeGroup" ToRole="ecnDatapointType" />
+        </EntityType>
+        <EntityContainer Name="ViessmannEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DataPoints" EntityType="ViessmannModel.DataPoint" />
+          <EntitySet Name="DatapointTypeGroups" EntityType="ViessmannModel.DatapointTypeGroup" />
+          <EntitySet Name="DatapointTypes" EntityType="ViessmannModel.DatapointType" />
+          <EntitySet Name="EventGroupValues" EntityType="ViessmannModel.EventGroupValue" />
+          <EntitySet Name="EventTypes" EntityType="ViessmannModel.EventType" />
+          <EntitySet Name="EventTypeEventTypeGroupLinks" EntityType="ViessmannModel.EventTypeEventTypeGroupLink" />
+          <EntitySet Name="EventTypeGroups" EntityType="ViessmannModel.EventTypeGroup" />
+          <EntitySet Name="EventValueTypes" EntityType="ViessmannModel.EventValueType" />
+          <AssociationSet Name="FK_ecnEventGroupValueCache_ecnDataPoint" Association="ViessmannModel.FK_ecnEventGroupValueCache_ecnDataPoint">
+            <End Role="ecnDataPoint" EntitySet="DataPoints" />
+            <End Role="ecnEventGroupValueCache" EntitySet="EventGroupValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ecnEventGroupValueCache_ecnEventValueType" Association="ViessmannModel.FK_ecnEventGroupValueCache_ecnEventValueType">
+            <End Role="ecnEventValueType" EntitySet="EventValueTypes" />
+            <End Role="ecnEventGroupValueCache" EntitySet="EventGroupValues" />
+          </AssociationSet>
+          <EntitySet Name="DisplayConditions" EntityType="ViessmannModel.DisplayCondition" />
+          <EntitySet Name="DisplayConditionGroups" EntityType="ViessmannModel.DisplayConditionGroup" />
+          <EntitySet Name="StatusTypes" EntityType="ViessmannModel.StatusType" />
+          <AssociationSet Name="FK_ecnEventGroupValueCache_ecnStatusType" Association="ViessmannModel.FK_ecnEventGroupValueCache_ecnStatusType">
+            <End Role="ecnStatusType" EntitySet="StatusTypes" />
+            <End Role="ecnEventGroupValueCache" EntitySet="EventGroupValues" />
+          </AssociationSet>
+          <AssociationSet Name="vsmDatapointTypeGroupecnDatapointType" Association="ViessmannModel.vsmDatapointTypeGroupecnDatapointType">
+            <End Role="vsmDatapointTypeGroup" EntitySet="DatapointTypeGroups" />
+            <End Role="ecnDatapointType" EntitySet="DatapointTypes" />
+          </AssociationSet>
+          <AssociationSet Name="DataPointDatapointType" Association="ViessmannModel.DataPointDatapointType">
+            <End Role="DataPoint" EntitySet="DataPoints" />
+            <End Role="DatapointType" EntitySet="DatapointTypes" />
+          </AssociationSet>
+          <AssociationSet Name="ecnEventTypeDatapointType" Association="ViessmannModel.ecnEventTypeDatapointType">
+            <End Role="ecnEventType" EntitySet="EventTypes" />
+            <End Role="DatapointType" EntitySet="DatapointTypes" />
+          </AssociationSet>
+          <AssociationSet Name="EventValueTypeEventType" Association="ViessmannModel.EventValueTypeEventType">
+            <End Role="EventValueType" EntitySet="EventValueTypes" />
+            <End Role="EventType" EntitySet="EventTypes" />
+          </AssociationSet>
+          <AssociationSet Name="EventValueTypeStatusType" Association="ViessmannModel.EventValueTypeStatusType">
+            <End Role="EventValueType" EntitySet="EventValueTypes" />
+            <End Role="StatusType" EntitySet="StatusTypes" />
+          </AssociationSet>
+          <AssociationSet Name="DisplayConditionGroupEventTypeGroup" Association="ViessmannModel.DisplayConditionGroupEventTypeGroup">
+            <End Role="DisplayConditionGroup" EntitySet="DisplayConditionGroups" />
+            <End Role="EventTypeGroup" EntitySet="EventTypeGroups" />
+          </AssociationSet>
+          <AssociationSet Name="EventValueTypeDisplayCondition" Association="ViessmannModel.EventValueTypeDisplayCondition">
+            <End Role="EventValueType" EntitySet="EventValueTypes" />
+            <End Role="DisplayCondition" EntitySet="DisplayConditions" />
+          </AssociationSet>
+          <AssociationSet Name="DisplayConditionGroupDisplayCondition" Association="ViessmannModel.DisplayConditionGroupDisplayCondition">
+            <End Role="DisplayConditionGroup" EntitySet="DisplayConditionGroups" />
+            <End Role="DisplayCondition" EntitySet="DisplayConditions" />
+          </AssociationSet>
+          <AssociationSet Name="EventTypeEventTypeGroupLinkEventTypeGroup" Association="ViessmannModel.EventTypeEventTypeGroupLinkEventTypeGroup">
+            <End Role="EventTypeEventTypeGroupLink" EntitySet="EventTypeEventTypeGroupLinks" />
+            <End Role="EventTypeGroup" EntitySet="EventTypeGroups" />
+          </AssociationSet>
+          <AssociationSet Name="EventTypeEventTypeEventTypeGroupLink" Association="ViessmannModel.EventTypeEventTypeEventTypeGroupLink">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="EventTypeEventTypeGroupLink" EntitySet="EventTypeEventTypeGroupLinks" />
+          </AssociationSet>
+          <AssociationSet Name="DatapointTypeEventTypeGroup" Association="ViessmannModel.DatapointTypeEventTypeGroup">
+            <End Role="DatapointType" EntitySet="DatapointTypes" />
+            <End Role="EventTypeGroup" EntitySet="EventTypeGroups" />
+          </AssociationSet>
+          <AssociationSet Name="DisplayConditionGroupDisplayConditionGroup" Association="ViessmannModel.DisplayConditionGroupDisplayConditionGroup">
+            <End Role="DisplayConditionGroup" EntitySet="DisplayConditionGroups" />
+            <End Role="DisplayConditionGroup1" EntitySet="DisplayConditionGroups" />
+          </AssociationSet>
+          <AssociationSet Name="EventTypeDisplayCondition" Association="ViessmannModel.EventTypeDisplayCondition">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="DisplayConditionSource" EntitySet="DisplayConditions" />
+          </AssociationSet>
+          <AssociationSet Name="DisplayConditionGroupEventType" Association="ViessmannModel.DisplayConditionGroupEventType">
+            <End Role="DisplayConditionGroup" EntitySet="DisplayConditionGroups" />
+            <End Role="EventType" EntitySet="EventTypes" />
+          </AssociationSet>
+          <AssociationSet Name="EventTypeGroupEventTypeGroup" Association="ViessmannModel.EventTypeGroupEventTypeGroup">
+            <End Role="EventTypeGroup" EntitySet="EventTypeGroups" />
+            <End Role="EventTypeGroup1" EntitySet="EventTypeGroups" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DatapointType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatusEventTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DatapointTypeGroups" Relationship="ViessmannModel.vsmDatapointTypeGroupecnDatapointType" FromRole="ecnDatapointType" ToRole="vsmDatapointTypeGroup" />
+          <NavigationProperty Name="DataPoints" Relationship="ViessmannModel.DataPointDatapointType" FromRole="DatapointType" ToRole="DataPoint" />
+          <NavigationProperty Name="EventTypes" Relationship="ViessmannModel.ecnEventTypeDatapointType" FromRole="DatapointType" ToRole="ecnEventType" />
+          <NavigationProperty Name="EventTypeGroups" Relationship="ViessmannModel.DatapointTypeEventTypeGroup" FromRole="DatapointType" ToRole="EventTypeGroup" />
+        </EntityType>
+        <EntityType Name="EventGroupValue">
+          <Key>
+            
+            <PropertyRef Name="DeviceId" />
+            <PropertyRef Name="DataPointId" />
+            <PropertyRef Name="EventTypeId" />
+          </Key>
+          
+          <Property Name="DeviceId" Type="Int32" Nullable="false" />
+          <Property Name="DataPointId" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeId" Type="Int32" Nullable="false" />
+          <Property Name="EventValueTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ValueState" Type="Byte" Nullable="false" />
+          <Property Name="StatusTypeId" Type="Int32" />
+          <Property Name="ValueType" Type="Int32" />
+          <Property Name="Value_Bit" Type="Boolean" />
+          <Property Name="Value_Int" Type="Int32" />
+          <Property Name="Value_Float" Type="Double" />
+          <Property Name="Value_Ntext" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value_VarChar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value_DateTime" Type="DateTime" Precision="3" />
+          <Property Name="Value_Binary" Type="Binary" MaxLength="8000" FixedLength="false" />
+          <Property Name="ValueUnit" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ValueEventTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ecnDataPoint" Relationship="ViessmannModel.FK_ecnEventGroupValueCache_ecnDataPoint" FromRole="ecnEventGroupValueCache" ToRole="ecnDataPoint" />
+          <NavigationProperty Name="ecnEventValueType" Relationship="ViessmannModel.FK_ecnEventGroupValueCache_ecnEventValueType" FromRole="ecnEventGroupValueCache" ToRole="ecnEventValueType" />
+          <NavigationProperty Name="ecnStatusType" Relationship="ViessmannModel.FK_ecnEventGroupValueCache_ecnStatusType" FromRole="ecnEventGroupValueCache" ToRole="ecnStatusType" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          
+          <Property Name="EnumType" Type="Boolean" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Conversion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="Filtercriterion" Type="Boolean" Nullable="false" />
+          <Property Name="Reportingcriterion" Type="Boolean" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultValue" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="ObjectId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DatapointTypes" Relationship="ViessmannModel.ecnEventTypeDatapointType" FromRole="ecnEventType" ToRole="DatapointType" />
+          <NavigationProperty Name="EventValueTypes" Relationship="ViessmannModel.EventValueTypeEventType" FromRole="EventType" ToRole="EventValueType" />
+          <NavigationProperty Name="EventTypeGroupLinks" Relationship="ViessmannModel.EventTypeEventTypeEventTypeGroupLink" FromRole="EventType" ToRole="EventTypeEventTypeGroupLink" />
+          <NavigationProperty Name="DisplayConditions" Relationship="ViessmannModel.EventTypeDisplayCondition" FromRole="EventType" ToRole="DisplayConditionSource" />
+          <NavigationProperty Name="DisplayConditionGroups" Relationship="ViessmannModel.DisplayConditionGroupEventType" FromRole="EventType" ToRole="DisplayConditionGroup" />
+        </EntityType>
+        <EntityType Name="EventTypeEventTypeGroupLink">
+          <Key>
+            
+            <PropertyRef Name="EventTypeId" />
+            <PropertyRef Name="EventTypeGroupId" />
+          </Key>
+          
+          <Property Name="EventTypeId" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeGroupId" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EventTypeGroup" Relationship="ViessmannModel.EventTypeEventTypeGroupLinkEventTypeGroup" FromRole="EventTypeEventTypeGroupLink" ToRole="EventTypeGroup" />
+          <NavigationProperty Name="EventType" Relationship="ViessmannModel.EventTypeEventTypeEventTypeGroupLink" FromRole="EventTypeEventTypeGroupLink" ToRole="EventType" />
+        </EntityType>
+        <EntityType Name="EventTypeGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ObjectGroupId" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="EntrancePoint" Type="Boolean" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceTypeId" Type="Int32" Nullable="false" />
+          <Property Name="DataPointTypeId" Type="Int32" Nullable="false" />
+          <Property Name="OrderIndex" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DisplayConditionGroups" Relationship="ViessmannModel.DisplayConditionGroupEventTypeGroup" FromRole="EventTypeGroup" ToRole="DisplayConditionGroup" />
+          <NavigationProperty Name="EventTypeLinks" Relationship="ViessmannModel.EventTypeEventTypeGroupLinkEventTypeGroup" FromRole="EventTypeGroup" ToRole="EventTypeEventTypeGroupLink" />
+          <NavigationProperty Name="DatapointType" Relationship="ViessmannModel.DatapointTypeEventTypeGroup" FromRole="EventTypeGroup" ToRole="DatapointType" />
+          <NavigationProperty Name="ChildEventTypeGroups" Relationship="ViessmannModel.EventTypeGroupEventTypeGroup" FromRole="EventTypeGroup" ToRole="EventTypeGroup1" />
+          <NavigationProperty Name="ParentEventTypeGroup" Relationship="ViessmannModel.EventTypeGroupEventTypeGroup" FromRole="EventTypeGroup1" ToRole="EventTypeGroup" />
+     
+        </EntityType>
+        <EntityType Name="EventValueType">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EnumAddressValue" Type="Int32" />
+          <Property Name="EnumReplaceValue" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="StatusTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DataType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Stepping" Type="Double" />
+          <Property Name="ValuePrecision" Type="Int32" />
+          <Property Name="LowerBorder" Type="Double" />
+          <Property Name="UpperBorder" Type="Double" />
+          <Property Name="Length" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EventGroupValues" Relationship="ViessmannModel.FK_ecnEventGroupValueCache_ecnEventValueType" FromRole="ecnEventValueType" ToRole="ecnEventGroupValueCache" />
+          <NavigationProperty Name="EventTypes" Relationship="ViessmannModel.EventValueTypeEventType" FromRole="EventValueType" ToRole="EventType" />
+          <NavigationProperty Name="StatusType" Relationship="ViessmannModel.EventValueTypeStatusType" FromRole="EventValueType" ToRole="StatusType" />
+          <NavigationProperty Name="DisplayConditions" Relationship="ViessmannModel.EventValueTypeDisplayCondition" FromRole="EventValueType" ToRole="DisplayCondition" />
+        </EntityType>
+        <Association Name="FK_ecnEventGroupValueCache_ecnDataPoint">
+          <End Type="ViessmannModel.DataPoint" Role="ecnDataPoint" Multiplicity="1" />
+          <End Type="ViessmannModel.EventGroupValue" Role="ecnEventGroupValueCache" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnDataPoint">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ecnEventGroupValueCache">
+              <PropertyRef Name="DataPointId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ecnEventGroupValueCache_ecnEventValueType">
+          <End Type="ViessmannModel.EventValueType" Role="ecnEventValueType" Multiplicity="1" />
+          <End Type="ViessmannModel.EventGroupValue" Role="ecnEventGroupValueCache" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnEventValueType">
+              <PropertyRef Name="Id" />
+              
+            </Principal>
+            <Dependent Role="ecnEventGroupValueCache">
+              <PropertyRef Name="EventValueTypeId" />
+              
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DisplayCondition">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ConditionGroupId" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeIdCondition" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeValueCondition" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Condition" Type="Int32" Nullable="false" />
+          <Property Name="ConditionValue" Type="Double" />
+          <NavigationProperty Name="EventValueCondition" Relationship="ViessmannModel.EventValueTypeDisplayCondition" FromRole="DisplayCondition" ToRole="EventValueType" />
+          <NavigationProperty Name="DisplayConditionGroup" Relationship="ViessmannModel.DisplayConditionGroupDisplayCondition" FromRole="DisplayCondition" ToRole="DisplayConditionGroup" />
+          <NavigationProperty Name="EventTypeCondition" Relationship="ViessmannModel.EventTypeDisplayCondition" FromRole="DisplayConditionSource" ToRole="EventType" />
+        </EntityType>
+        <EntityType Name="DisplayConditionGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="Byte" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EventTypeIdDest" Type="Int32" Nullable="false" />
+          <Property Name="EventTypeGroupIdDest" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EventTypeGroupDest" Relationship="ViessmannModel.DisplayConditionGroupEventTypeGroup" FromRole="DisplayConditionGroup" ToRole="EventTypeGroup" />
+          <NavigationProperty Name="DisplayConditions" Relationship="ViessmannModel.DisplayConditionGroupDisplayCondition" FromRole="DisplayConditionGroup" ToRole="DisplayCondition" />
+          <NavigationProperty Name="ParentDisplayConditionGroup" Relationship="ViessmannModel.DisplayConditionGroupDisplayConditionGroup" FromRole="DisplayConditionGroup" ToRole="DisplayConditionGroup1" />
+          <NavigationProperty Name="ChildDisplayConditionGroups" Relationship="ViessmannModel.DisplayConditionGroupDisplayConditionGroup" FromRole="DisplayConditionGroup1" ToRole="DisplayConditionGroup" />
+          <NavigationProperty Name="TargetEventType" Relationship="ViessmannModel.DisplayConditionGroupEventType" FromRole="DisplayConditionGroup" ToRole="EventType" />
+        </EntityType>
+        <EntityType Name="StatusType">
+          <Key>
+            <PropertyRef Name="Id" />
+            
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShowInEventTray" Type="Boolean" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EventGroupValues" Relationship="ViessmannModel.FK_ecnEventGroupValueCache_ecnStatusType" FromRole="ecnStatusType" ToRole="ecnEventGroupValueCache" />
+          <NavigationProperty Name="EventValueTypes" Relationship="ViessmannModel.EventValueTypeStatusType" FromRole="StatusType" ToRole="EventValueType" />
+        </EntityType>
+        <Association Name="FK_ecnEventGroupValueCache_ecnStatusType">
+          <End Type="ViessmannModel.StatusType" Role="ecnStatusType" Multiplicity="0..1" />
+          <End Type="ViessmannModel.EventGroupValue" Role="ecnEventGroupValueCache" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ecnStatusType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ecnEventGroupValueCache">
+              <PropertyRef Name="StatusTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vsmDatapointTypeGroupecnDatapointType">
+          <End Type="ViessmannModel.DatapointTypeGroup" Role="vsmDatapointTypeGroup" Multiplicity="*" />
+          <End Type="ViessmannModel.DatapointType" Role="ecnDatapointType" Multiplicity="*" />
+        </Association>
+        <Association Name="DataPointDatapointType">
+          <End Type="ViessmannModel.DataPoint" Role="DataPoint" Multiplicity="*" />
+          <End Type="ViessmannModel.DatapointType" Role="DatapointType" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="DatapointType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DataPoint">
+              <PropertyRef Name="DataPointTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ecnEventTypeDatapointType">
+          <End Type="ViessmannModel.EventType" Role="ecnEventType" Multiplicity="*" />
+          <End Type="ViessmannModel.DatapointType" Role="DatapointType" Multiplicity="*" />
+        </Association>
+        <Association Name="EventValueTypeEventType">
+          <End Type="ViessmannModel.EventValueType" Role="EventValueType" Multiplicity="*" />
+          <End Type="ViessmannModel.EventType" Role="EventType" Multiplicity="*" />
+        </Association>
+        <Association Name="EventValueTypeStatusType">
+          <End Type="ViessmannModel.EventValueType" Role="EventValueType" Multiplicity="*" />
+          <End Type="ViessmannModel.StatusType" Role="StatusType" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="StatusType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventValueType">
+              <PropertyRef Name="StatusTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DisplayConditionGroupEventTypeGroup">
+          <End Type="ViessmannModel.DisplayConditionGroup" Role="DisplayConditionGroup" Multiplicity="*" />
+          <End Type="ViessmannModel.EventTypeGroup" Role="EventTypeGroup" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="EventTypeGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayConditionGroup">
+              <PropertyRef Name="EventTypeGroupIdDest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventValueTypeDisplayCondition">
+          <End Type="ViessmannModel.EventValueType" Role="EventValueType" Multiplicity="1" />
+          <End Type="ViessmannModel.DisplayCondition" Role="DisplayCondition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventValueType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayCondition">
+              <PropertyRef Name="EventTypeValueCondition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DisplayConditionGroupDisplayCondition">
+          <End Type="ViessmannModel.DisplayConditionGroup" Role="DisplayConditionGroup" Multiplicity="1" />
+          <End Type="ViessmannModel.DisplayCondition" Role="DisplayCondition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DisplayConditionGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayCondition">
+              <PropertyRef Name="ConditionGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventTypeEventTypeGroupLinkEventTypeGroup">
+          <End Type="ViessmannModel.EventTypeEventTypeGroupLink" Role="EventTypeEventTypeGroupLink" Multiplicity="*" />
+          <End Type="ViessmannModel.EventTypeGroup" Role="EventTypeGroup" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="EventTypeGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventTypeEventTypeGroupLink">
+              <PropertyRef Name="EventTypeGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventTypeEventTypeEventTypeGroupLink">
+          <End Type="ViessmannModel.EventType" Role="EventType" Multiplicity="1" />
+          <End Type="ViessmannModel.EventTypeEventTypeGroupLink" Role="EventTypeEventTypeGroupLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventTypeEventTypeGroupLink">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DatapointTypeEventTypeGroup">
+          <End Type="ViessmannModel.DatapointType" Role="DatapointType" Multiplicity="1" />
+          <End Type="ViessmannModel.EventTypeGroup" Role="EventTypeGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DatapointType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventTypeGroup">
+              <PropertyRef Name="DataPointTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DisplayConditionGroupDisplayConditionGroup">
+          <End Type="ViessmannModel.DisplayConditionGroup" Role="DisplayConditionGroup" Multiplicity="*" />
+          <End Type="ViessmannModel.DisplayConditionGroup" Role="DisplayConditionGroup1" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="DisplayConditionGroup1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayConditionGroup">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventTypeDisplayCondition">
+          <End Type="ViessmannModel.EventType" Role="EventType" Multiplicity="1" />
+          <End Type="ViessmannModel.DisplayCondition" Role="DisplayConditionSource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayConditionSource">
+              <PropertyRef Name="EventTypeIdCondition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DisplayConditionGroupEventType">
+          <End Type="ViessmannModel.DisplayConditionGroup" Role="DisplayConditionGroup" Multiplicity="*" />
+          <End Type="ViessmannModel.EventType" Role="EventType" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DisplayConditionGroup">
+              <PropertyRef Name="EventTypeIdDest" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventTypeGroupEventTypeGroup">
+          <End Type="ViessmannModel.EventTypeGroup" Role="EventTypeGroup" Multiplicity="1" />
+          <End Type="ViessmannModel.EventTypeGroup" Role="EventTypeGroup1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventTypeGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventTypeGroup1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ecnViessmannModelStoreContainer" CdmEntityContainer="ViessmannEntities">
+          <EntitySetMapping Name="DataPoints">
+            <EntityTypeMapping TypeName="ViessmannModel.DataPoint">
+              <MappingFragment StoreEntitySet="ecnDataPoint">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DataPointTypeId" ColumnName="DataPointTypeId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="InformationDataSetXML" ColumnName="InformationDataSetXML" />
+                <ScalarProperty Name="StatusEventTypeId" ColumnName="StatusEventTypeId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatapointTypeGroups">
+            <EntityTypeMapping TypeName="ViessmannModel.DatapointTypeGroup">
+              <MappingFragment StoreEntitySet="vsmDatapointTypeGroup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="OfflineConfigEnabled" ColumnName="OfflineConfigEnabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DatapointTypes">
+            <EntityTypeMapping TypeName="ViessmannModel.DatapointType">
+              <MappingFragment StoreEntitySet="ecnDatapointType">
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="StatusEventTypeId" ColumnName="StatusEventTypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventGroupValues">
+            <EntityTypeMapping TypeName="ViessmannModel.EventGroupValue">
+              <MappingFragment StoreEntitySet="ecnEventGroupValueCache">
+                <ScalarProperty Name="ValueEventTime" ColumnName="ValueEventTime" />
+                <ScalarProperty Name="ValueUnit" ColumnName="ValueUnit" />
+                <ScalarProperty Name="Value_Binary" ColumnName="Value_Binary" />
+                <ScalarProperty Name="Value_DateTime" ColumnName="Value_DateTime" />
+                <ScalarProperty Name="Value_VarChar" ColumnName="Value_VarChar" />
+                <ScalarProperty Name="Value_Ntext" ColumnName="Value_Ntext" />
+                <ScalarProperty Name="Value_Float" ColumnName="Value_Float" />
+                <ScalarProperty Name="Value_Int" ColumnName="Value_Int" />
+                <ScalarProperty Name="Value_Bit" ColumnName="Value_Bit" />
+                <ScalarProperty Name="ValueType" ColumnName="ValueType" />
+                <ScalarProperty Name="StatusTypeId" ColumnName="StatusTypeId" />
+                <ScalarProperty Name="ValueState" ColumnName="ValueState" />
+                <ScalarProperty Name="EventValueTypeId" ColumnName="EventValueTypeId" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="DataPointId" ColumnName="DataPointId" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+                
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="ViessmannModel.EventType">
+              <MappingFragment StoreEntitySet="ecnEventType">
+                <ScalarProperty Name="ObjectId" ColumnName="ObjectId" />
+                <ScalarProperty Name="DefaultValue" ColumnName="DefaultValue" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Reportingcriterion" ColumnName="Reportingcriterion" />
+                <ScalarProperty Name="Filtercriterion" ColumnName="Filtercriterion" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Conversion" ColumnName="Conversion" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EnumType" ColumnName="EnumType" />
+                
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypeEventTypeGroupLinks">
+            <EntityTypeMapping TypeName="ViessmannModel.EventTypeEventTypeGroupLink">
+              <MappingFragment StoreEntitySet="ecnEventTypeEventTypeGroupLink">
+                <ScalarProperty Name="EventTypeOrder" ColumnName="EventTypeOrder" />
+                <ScalarProperty Name="EventTypeGroupId" ColumnName="EventTypeGroupId" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypeGroups">
+            <EntityTypeMapping TypeName="ViessmannModel.EventTypeGroup">
+              <MappingFragment StoreEntitySet="ecnEventTypeGroup">
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="DataPointTypeId" ColumnName="DataPointTypeId" />
+                <ScalarProperty Name="DeviceTypeId" ColumnName="DeviceTypeId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="EntrancePoint" ColumnName="EntrancePoint" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ObjectGroupId" ColumnName="ObjectGroupId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventValueTypes">
+            <EntityTypeMapping TypeName="ViessmannModel.EventValueType">
+              <MappingFragment StoreEntitySet="ecnEventValueType">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="UpperBorder" ColumnName="UpperBorder" />
+                <ScalarProperty Name="LowerBorder" ColumnName="LowerBorder" />
+                <ScalarProperty Name="ValuePrecision" ColumnName="ValuePrecision" />
+                <ScalarProperty Name="Stepping" ColumnName="Stepping" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="StatusTypeId" ColumnName="StatusTypeId" />
+                <ScalarProperty Name="EnumReplaceValue" ColumnName="EnumReplaceValue" />
+                <ScalarProperty Name="EnumAddressValue" ColumnName="EnumAddressValue" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DisplayConditions">
+            <EntityTypeMapping TypeName="ViessmannModel.DisplayCondition">
+              <MappingFragment StoreEntitySet="ecnDisplayCondition">
+                <ScalarProperty Name="ConditionValue" ColumnName="ConditionValue" />
+                <ScalarProperty Name="Condition" ColumnName="Condition" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EventTypeValueCondition" ColumnName="EventTypeValueCondition" />
+                <ScalarProperty Name="EventTypeIdCondition" ColumnName="EventTypeIdCondition" />
+                <ScalarProperty Name="ConditionGroupId" ColumnName="ConditionGroupId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DisplayConditionGroups">
+            <EntityTypeMapping TypeName="ViessmannModel.DisplayConditionGroup">
+              <MappingFragment StoreEntitySet="ecnDisplayConditionGroup">
+                <ScalarProperty Name="EventTypeGroupIdDest" ColumnName="EventTypeGroupIdDest" />
+                <ScalarProperty Name="EventTypeIdDest" ColumnName="EventTypeIdDest" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusTypes">
+            <EntityTypeMapping TypeName="ViessmannModel.StatusType">
+              <MappingFragment StoreEntitySet="ecnStatusType">
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="ShowInEventTray" ColumnName="ShowInEventTray" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="vsmDatapointTypeGroupecnDatapointType" TypeName="ViessmannModel.vsmDatapointTypeGroupecnDatapointType" StoreEntitySet="vsmDatapointTypeGroupDatapointTypeLink">
+            <EndProperty Name="ecnDatapointType">
+              <ScalarProperty Name="Id" ColumnName="DatapointTypeId" />
+            </EndProperty>
+            <EndProperty Name="vsmDatapointTypeGroup">
+              <ScalarProperty Name="Id" ColumnName="DatapointTypeGroupId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ecnEventTypeDatapointType" TypeName="ViessmannModel.ecnEventTypeDatapointType" StoreEntitySet="ecnDataPointTypeEventTypeLink">
+            <EndProperty Name="DatapointType">
+              <ScalarProperty Name="Id" ColumnName="DataPointTypeId" />
+            </EndProperty>
+            <EndProperty Name="ecnEventType">
+              <ScalarProperty Name="Id" ColumnName="EventTypeId" />
+              
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="EventValueTypeEventType" TypeName="ViessmannModel.EventValueTypeEventType" StoreEntitySet="ecnEventTypeEventValueTypeLink">
+            <EndProperty Name="EventType">
+              <ScalarProperty Name="Id" ColumnName="EventTypeId" />
+              
+            </EndProperty>
+            <EndProperty Name="EventValueType">
+              <ScalarProperty Name="Id" ColumnName="EventValueId" />
+              
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

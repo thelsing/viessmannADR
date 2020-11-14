@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3eeb1842df8442448a52f8288dc899ce" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="ViessmannModel.DataPoint" Width="1.5" PointX="9.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ViessmannModel.DatapointTypeGroup" Width="2.375" PointX="1.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ViessmannModel.DatapointType" Width="2" PointX="6.125" PointY="0.75" />
+        <EntityTypeShape EntityType="ViessmannModel.EventGroupValue" Width="2.375" PointX="8.625" PointY="7.125" />
+        <EntityTypeShape EntityType="ViessmannModel.EventType" Width="1.5" PointX="6.75" PointY="4.375" />
+        <EntityTypeShape EntityType="ViessmannModel.EventTypeEventTypeGroupLink" Width="2.5" PointX="3.75" PointY="5.25" />
+        <EntityTypeShape EntityType="ViessmannModel.EventTypeGroup" Width="2.375" PointX="0.625" PointY="3.875" />
+        <EntityTypeShape EntityType="ViessmannModel.EventValueType" Width="1.5" PointX="6.5" PointY="9.5" />
+        <AssociationConnector Association="ViessmannModel.FK_ecnEventGroupValueCache_ecnDataPoint" />
+        <AssociationConnector Association="ViessmannModel.FK_ecnEventGroupValueCache_ecnEventValueType" />
+        <EntityTypeShape EntityType="ViessmannModel.DisplayCondition" Width="2.125" PointX="3.75" PointY="10.125" />
+        <EntityTypeShape EntityType="ViessmannModel.DisplayConditionGroup" Width="2.625" PointX="0.5" PointY="9.5" />
+        <EntityTypeShape EntityType="ViessmannModel.StatusType" Width="2.625" PointX="8.75" PointY="12.625" />
+        <AssociationConnector Association="ViessmannModel.FK_ecnEventGroupValueCache_ecnStatusType" />
+        <AssociationConnector Association="ViessmannModel.vsmDatapointTypeGroupecnDatapointType" />
+        <AssociationConnector Association="ViessmannModel.DataPointDatapointType" />
+        <AssociationConnector Association="ViessmannModel.ecnEventTypeDatapointType" />
+        <AssociationConnector Association="ViessmannModel.EventValueTypeEventType" />
+        <AssociationConnector Association="ViessmannModel.EventValueTypeStatusType" />
+        <AssociationConnector Association="ViessmannModel.DisplayConditionGroupEventTypeGroup" />
+        <AssociationConnector Association="ViessmannModel.EventValueTypeDisplayCondition" />
+        <AssociationConnector Association="ViessmannModel.DisplayConditionGroupDisplayCondition" />
+        <AssociationConnector Association="ViessmannModel.EventTypeEventTypeGroupLinkEventTypeGroup" />
+        <AssociationConnector Association="ViessmannModel.EventTypeEventTypeEventTypeGroupLink" />
+        <AssociationConnector Association="ViessmannModel.DatapointTypeEventTypeGroup" />
+        <AssociationConnector Association="ViessmannModel.DisplayConditionGroupDisplayConditionGroup" />
+        <AssociationConnector Association="ViessmannModel.EventTypeGroupEventTypeGroup" />
+        <AssociationConnector Association="ViessmannModel.EventTypeDisplayCondition" />
+        <AssociationConnector Association="ViessmannModel.DisplayConditionGroupEventType" />
+        <AssociationConnector Association="ViessmannModel.EventTypeGroupEventTypeGroup" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
