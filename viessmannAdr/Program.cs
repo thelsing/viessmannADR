@@ -29,8 +29,7 @@ namespace viessmannAdr
 
                 foreach (var g in selectGroups(device))
                 {
-                    printEventGroup(0, g, false);
-                    //fetchAdrFromEventGroup(0);
+                    printEventGroup(0, g, true);
                     //generateVitoXML(g);
                     //addessesForFile.Clear();
                 }
@@ -122,6 +121,8 @@ namespace viessmannAdr
 
             if (print)
                 Console.WriteLine(new string(' ', indent) + "G (" + g.Id + ") " + name + (hideGroup ? " (Hidden) " : " ") + g.OrderIndex);
+
+            return;
             EvalConditions(indent + 8, g.DisplayConditionGroups, !showResult);
 
             foreach (var link in g.EventTypeLinks.OrderBy(_ => _.EventTypeOrder))

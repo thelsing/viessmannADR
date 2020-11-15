@@ -34,7 +34,6 @@
         <AssociationConnector Association="ViessmannModel.EventTypeGroupEventTypeGroup" />
         <AssociationConnector Association="ViessmannModel.EventTypeDisplayCondition" />
         <AssociationConnector Association="ViessmannModel.DisplayConditionGroupEventType" />
-        <AssociationConnector Association="ViessmannModel.EventTypeGroupEventTypeGroup" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
